@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.conversation {
+
+    display: flex;
+    padding: 10px 10px;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid gray;
+    flex: 1;
+    height: 65px;
+    min-height: 65px;
+    max-height: 65px;
+
+    img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    & .username-lastmsg {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 5px;
+        flex: 1;
+        height: 45px;
+
+        & .username-time {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+
+            & .username {
+                font-size: 1rem;
+                font-family: "Roboto", sans-serif;
+                font-weight: 700;
+                font-style: normal;
+            }
+
+            & .last-msg-time {
+                font-size: .8rem;
+                font-family: "Roboto", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+        }
+
+        & p {
+            font-size: .8rem;
+            font-family: "Roboto", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+    }
+}
+
+.conversation:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.452);
+}

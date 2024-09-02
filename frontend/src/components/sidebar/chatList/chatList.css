@@ -1,0 +1,91 @@
+.chat-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: scroll;
+}
+
+.chat-list::-webkit-scrollbar {
+    display: none;
+}
+
+.chat-list>.search-bar {
+    margin: 0 10px;
+    border-radius: 5px;
+    padding: 5px;
+    padding-right: 10px;
+    gap: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.452);
+    /* Initial background color */
+    border: 0.1px solid white;
+}
+
+.chat-list>.search-bar:focus-within {
+    background-color: rgba(0, 0, 0, 0.767);
+    /* Background color when focused */
+    transition: 0.2s;
+}
+
+.chat-list>.search-bar input {
+    border: none;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    background-color: transparent;
+    color: white;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    caret-color: white;
+}
+
+.chat-list>.search-bar input::placeholder {
+    color: rgb(222, 222, 222);
+    font-size: 16px;
+}
+
+.chat-list>.search-bar>label {
+    height: 20px;
+    width: 20px;
+}
+
+.chat-list>.search-bar>label>img {
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+}
+
+.conversations {
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    & .conversation-link {
+        text-decoration: none;
+        color: inherit;
+    }
+}
+
+.conversations::-webkit-scrollbar {
+    width: 10px;
+}
+
+.conversations::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.conversations::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.conversations::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}

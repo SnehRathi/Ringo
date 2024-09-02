@@ -1,0 +1,189 @@
+.chat {
+    flex: .7;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & .chat-header-container {
+        height: 65px;
+        width: 100%;
+        border-bottom: 1px solid gray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+
+        & .chat-header {
+            height: 45px;
+            width: 100%;
+            gap: 15px;
+            display: flex;
+            align-items: center;
+
+            & img {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            & .username-about-icons {
+                width: 100%;
+                height: 45px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                & .username-about {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    gap: 1px;
+                    height: 100%;
+
+                    & .username {
+                        font-size: 20px;
+                        font-family: "Roboto", sans-serif;
+                        font-weight: 600;
+                        font-style: normal;
+                    }
+
+                    & .about {
+                        font-size: .8rem;
+                        font-family: "Roboto", sans-serif;
+                        font-weight: 300;
+                        font-style: normal;
+                    }
+                }
+
+                .icons {
+                    display: flex;
+                    gap: 8px;
+                    height: 100%;
+                    align-items: center;
+
+                    .icon-container {
+                        height: 36px;
+                        width: 36px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 50%;
+
+                        .icon {
+                            height: 24px;
+                            width: 24px;
+                            fill: white;
+                            object-fit: contain;
+                        }
+                    }
+
+                    .icon-container:hover {
+                        cursor: pointer;
+
+                        .icon {
+                            fill: gray;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /* Main Messages Section */
+    & .msg-section {
+        flex: 1;
+        overflow-y: scroll;
+        scrollbar-width: none;
+    }
+
+
+    /* The chat options section */
+    .chat-options {
+        display: flex;
+        align-items: center;
+        height: 55px;
+        padding: 5px;
+        border-top: 1px solid #444;
+        gap: 10px;
+
+        .left-icons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background-color: rgba(0, 0, 0, 0.452);
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .right-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+        }
+        
+        .icon {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+        
+        .icon:hover{
+            font-weight: bold;
+            fill: gray;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-upload-label {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .send-btn {
+            background-color: #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+    }
+
+
+}

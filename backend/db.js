@@ -1,0 +1,28 @@
+// connectToMongoDB.js
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+// Connection URI
+dotenv.config();
+
+const uri = process.env.MONGO_URI;
+async function connectToMongoDB() {
+    try {
+        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        
+        // Load existing models
+        require('./models/user'); // Assuming you have userModel.js
+        
+        // Load new models
+        require('./models/msg');
+        require('./models/chat');
+        require('./models/group');
+        
+        console.log('Connected to MongoDB Hii');
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        throw error;
+    }
+}
+
+module.exports = connectToMongoDB;

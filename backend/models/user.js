@@ -11,13 +11,18 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  contactNumber: {
+    type: String,  // Add this field for the contact number
+    required: true,
+    trim: true
+  },
   passwordHash: {
     type: String,
     required: true
   },
   profilePicture: {
     type: String,
-    default: '/profile.png' 
+    default: '/profile.png'
   },
   status: {
     type: String,
@@ -83,7 +88,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-},{ timestamps: true });
+}, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);
 

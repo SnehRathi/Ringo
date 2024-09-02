@@ -12,7 +12,7 @@
     height: 100%;
     width: 0;
     background-color: #3498db;
-    animation: loading 2s ease-in-out infinite;
+    animation: loading 3s ease-in-out infinite;
   }
   
   @keyframes loading {

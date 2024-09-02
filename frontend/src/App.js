@@ -4,25 +4,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import MainContainer from './components/main-container/MainContainer';
 import Login from './components/login/Login';
-import { setUser } from './redux/user/userSlice';
+import Register from './components/login/Register';
+import { setUser } from './redux/userSlice';
+import { setLoading } from './redux/loadingSlice';
 import LoadingBar from './LoadingBar'; // Import the LoadingBar component
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [showLoadingBar, setShowLoadingBar] = useState(false); // To manage loading bar visibility
+  const isLoading = useSelector((state) => state.loading.isLoading);
+  const [tokenChecked, setTokenChecked] = useState(false); // State to track if the token check is complete
 
   useEffect(() => {
     const checkToken = async () => {
       // Show loading bar
-      setShowLoadingBar(true);
+      dispatch(setLoading(true));
 
       // Retrieve the token from local storage
       const token = localStorage.getItem('token');
 
       if (token) {
-        // Verify token and fetch user details from the backend
+        // console.log("Token is present");
         try {
           const response = await fetch('http://localhost:5000/api/verify', {
             method: 'GET',
@@ -33,10 +35,9 @@ function App() {
 
           if (response.ok) {
             const data = await response.json();
-            // Set the user in the Redux store
+            // console.log(data.user);
             dispatch(setUser(data.user));
           } else {
-            // If token is not valid, clear the token and user data
             localStorage.removeItem('token');
             dispatch(setUser(null));
           }
@@ -49,41 +50,48 @@ function App() {
         dispatch(setUser(null));
       }
 
-      // Hide loading bar after a minimum of 2 seconds
-      setTimeout(() => {
-        setLoading(false);
-        setShowLoadingBar(false);
-      }, 2000);
+      // Mark token check as complete and hide loading bar
+      setTokenChecked(true);
+      dispatch(setLoading(false));
     };
 
     checkToken();
   }, [dispatch]);
 
+  if (!tokenChecked || isLoading) {
+    // Show the loading bar while the token is being checked
+    return (
+      <div className="App">
+        <LoadingBar loading={isLoading} />
+      </div>
+    );
+  }
 
   return (
     <Router>
       <div className="App">
-        {
-          loading ? <LoadingBar loading={showLoadingBar} /> :
-            <Routes>
-              {/* Route for the main container */}
-              <Route
-                path='/'
-                element={user && user.isLoggedIn ? <MainContainer isChatOpen={false} /> : <Navigate to="/login" />}
-              />
-              <Route
-                path='/chat/:chatId'
-                element={user && user.isLoggedIn ? <MainContainer isChatOpen={true} /> : <Navigate to="/login" />}
-              />
-              {/* Route for the login page */}
-              <Route
-                path='/login'
-                element={<Login />}
-              />
-              {/* Redirect any undefined routes to the home page */}
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-        }
+        <Routes>
+          {/* Route for the main container */}
+          <Route
+            path='/'
+            element={user && user.isLoggedIn ? <MainContainer isChatOpen={false} /> : <Navigate to="/login" />}
+          />
+          <Route
+            path='/chat/:chatId'
+            element={user && user.isLoggedIn ? <MainContainer isChatOpen={true} /> : <Navigate to="/login" />}
+          />
+          {/* Route for the login page */}
+          <Route
+            path='/login'
+            element={ <Login /> }
+          />
+          <Route
+            path='/register'
+            element={<Register />}
+          />
+          {/* Redirect any undefined routes to the login page */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
       </div>
     </Router>
   );

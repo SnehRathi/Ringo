@@ -17,8 +17,6 @@ async function connectToMongoDB() {
         require('./models/msg');
         require('./models/chat');
         require('./models/group');
-        
-        console.log('Connected to MongoDB Hii');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
         throw error;

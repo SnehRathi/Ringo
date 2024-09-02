@@ -1,18 +1,23 @@
 import React from "react";
-import { useLocation } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
 import Chat from '../chat/Chat';
 import WelcomePage from "../welcome-page/WelcomePage";
+import LoadingBar from "../../LoadingBar"; // Import the LoadingBar component
+import { useSelector } from 'react-redux';
 import './main-container.css';
 
-function MainContainer({isChatOpen}) {
-    const location = useLocation();
-    // const isChatPage = location.pathname.startsWith("/chat");
+function MainContainer({ isChatOpen }) {
+    const isLoading = useSelector((state) => state.loading.isLoading); // Get loading state from Redux
 
     return (
         <div className='main-container'>
-            <Sidebar />
-            {isChatOpen ? <Chat /> : <WelcomePage />}
+            {/* Display the LoadingBar if loading is in progress */}
+            {isLoading ? <LoadingBar loading={isLoading} /> : (
+                <>
+                    <Sidebar />
+                    {isChatOpen ? <Chat /> : <WelcomePage />}
+                </>
+            )}
         </div>
     );
 }

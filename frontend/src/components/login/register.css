@@ -55,7 +55,7 @@
             gap: 15px;
             width: 60%;
 
-            & div {
+            & .form-container {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;

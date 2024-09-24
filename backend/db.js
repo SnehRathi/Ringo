@@ -8,6 +8,7 @@ dotenv.config();
 const uri = process.env.MONGO_URI;
 async function connectToMongoDB() {
     try {
+        console.log("connection called");
         await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
         
         // Load existing models

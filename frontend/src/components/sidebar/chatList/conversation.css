@@ -38,6 +38,7 @@
                 font-family: "Roboto", sans-serif;
                 font-weight: 700;
                 font-style: normal;
+                color: white;
             }
 
             & .last-msg-time {

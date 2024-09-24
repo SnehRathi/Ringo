@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/userSlice'; // Adjust the import path as necessary
 import VisibilityIcon from '@mui/icons-material/Visibility'; // Assuming you're using Material-UI
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
 
 function Register() {
     const [step, setStep] = useState(1);
@@ -43,17 +44,22 @@ function Register() {
 
             if (!response.ok) {
                 const errorData = await response.json();
+                console.log(errorData);
                 throw new Error(errorData.message || 'Failed to register');
             }
 
             const data = await response.json();
+            const { user, token } = data;
+            // Store the token in localStorage
+            localStorage.setItem('ringoToken', token);
             console.log('Registration successful:', data);
 
             // Set the user state with the received data
-            dispatch(setUser(data.user));
+            dispatch(setUser(user));
 
-            // Hide loader and navigate to the login page
+            // Hide loader
             setLoading(false);
+            // navigate to the home
             navigate('/');
         } catch (err) {
             setLoading(false); // Hide loader on error
@@ -76,7 +82,7 @@ function Register() {
                     {step === 1 && (
                         <>
                             <h2>Enter Email and Phone Number</h2>
-                            <div>
+                            <div className='form-container'>
                                 <input
                                     type="email"
                                     placeholder="Email"
@@ -96,7 +102,7 @@ function Register() {
                         </>
                     )}
                     {step === 2 && (
-                        <div>
+                        <div className='form-container'>
                             <h2>Choose Username and Password</h2>
                             <input
                                 type="text"
@@ -135,9 +141,10 @@ function Register() {
                                         <button type="submit" className="submit-button">Register</button>
                                     </div>
                             }
+                            {error && <Alert severity="error">{error}</Alert>}
                         </div>
                     )}
-                    {error && <p className="error-message">{error}</p>}
+                    {/* {error && <p className="error-message">{error}</p>} */}
                 </form>
             </div>
         </div>

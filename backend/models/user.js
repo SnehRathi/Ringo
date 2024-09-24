@@ -12,13 +12,13 @@ const UserSchema = new mongoose.Schema({
     unique: true
   },
   contactNumber: {
-    type: String,  // Add this field for the contact number
+    type: String,
     required: true,
     trim: true
   },
   passwordHash: {
     type: String,
-    required: true
+    required: true,
   },
   profilePicture: {
     type: String,
@@ -41,49 +41,18 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // contacts: [
-  //   {
-  //     userId: {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: 'User'
-  //     },
-  //     username: String,
-  //     profilePicture: String
-  //   }
-  // ],
   chats: [
     {
       chatId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat'
       },
-      lastMessage: String,
-      lastMessageDate: Date,
       unreadCount: {
         type: Number,
         default: 0
       }
     }
   ],
-  // ,
-  // settings: {
-  //   theme: {
-  //     type: String,
-  //     enum: ['light', 'dark'],
-  //     default: 'light'
-  //   },
-  //   notifications: {
-  //     type: Boolean,
-  //     default: true
-  //   },
-  //   privacy: {
-  //     profileVisibility: {
-  //       type: String,
-  //       enum: ['public', 'contacts', 'private'],
-  //       default: 'public'
-  //     }
-  //   }
-  // }
   isLoggedIn: {
     type: Boolean,
     default: true
@@ -93,3 +62,23 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
+
+// ,
+// settings: {
+//   theme: {
+//     type: String,
+//     enum: ['light', 'dark'],
+//     default: 'light'
+//   },
+//   notifications: {
+//     type: Boolean,
+//     default: true
+//   },
+//   privacy: {
+//     profileVisibility: {
+//       type: String,
+//       enum: ['public', 'contacts', 'private'],
+//       default: 'public'
+//     }
+//   }
+// }

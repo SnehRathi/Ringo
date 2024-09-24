@@ -14,6 +14,11 @@ const chatSchema = new mongoose.Schema({
             ref: 'Message' // Reference to the Message model
         }
     ],
+    lastMessage: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message', // Reference to the Message model for the last message
+        required: false
+    },
     isGroupChat: {
         type: Boolean,
         default: false // Indicates if the chat is a group chat or a direct message

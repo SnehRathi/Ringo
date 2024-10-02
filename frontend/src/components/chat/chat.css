@@ -1,11 +1,124 @@
 .chat {
-    flex: .7;
+    flex: 0.7;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
     color: white;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    position: relative;
+
+    .attachment-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f1f1f1;
+        padding: 10px;
+        border-radius: 8px;
+        /* margin-bottom: 10px; */
+        width: 30%;
+        position: absolute;
+        bottom: 35px;
+        left: 10px;
+        height: 13rem;
+
+        .attachment-details {
+            display: flex;
+            align-items: center;
+            width: 150px;
+
+            img,
+            video {
+                max-height: 150px;
+                /* width: 100%; */
+                aspect-ratio: 1/1;
+                /* object-fit: cover; */
+                border-radius: 8px;
+            }
+
+            .attachment-icon {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-left: 10px;
+
+                img {
+                    max-height: 50px;
+                }
+
+                p {
+                    margin: 5px 0 0 0;
+                    font-size: 12px;
+                    color: #333;
+                }
+            }
+
+            .pdf-preview {
+                display: flex;
+                align-items: center;
+        
+                a {
+                    display: flex;
+                    align-items: center;
+                    text-decoration: none;
+                    color: inherit;
+        
+                    .pdf-icon {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 10px;
+        
+                        svg {
+                            font-size: 50px;
+                            color: #d32f2f;
+                        }
+                    }
+        
+                    .file-details {
+                        p {
+                            margin: 0;
+        
+                            &:first-child {
+                                font-weight: bold;
+                                color: #333;
+                            }
+                            &:last-child {
+                                font-size: 0.9rem;
+                                color: #007BFF;
+                            }
+                        }
+                    }
+                }
+        
+                &:hover a {
+                    .file-details p:last-child {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        .remove-attachment {
+            background: transparent;
+            color: #ff4d4d;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            padding: 5px;
+
+            &:hover {
+                color: #d32f2f;
+            }
+        }
+    }
+
+    .loading-indicator {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+    }
+
 
     & .chat-header-container {
         height: 65px;
@@ -53,7 +166,7 @@
                     }
 
                     & .about {
-                        font-size: .8rem;
+                        font-size: 0.8rem;
                         font-family: "Roboto", sans-serif;
                         font-weight: 300;
                         font-style: normal;
@@ -94,28 +207,28 @@
         }
     }
 
-
     /* Main Messages Section */
     & .msg-section {
         flex: 1;
-        overflow-y: scroll;
+        overflow-y: auto;
         scrollbar-width: none;
+        transition: height 0.2s ease;
     }
-
 
     /* The chat options section */
     .chat-options {
         display: flex;
-        align-items: center;
-        height: 55px;
-        padding: 5px;
+        align-items: flex-end;
+        padding: 5px 10px;
         border-top: 1px solid #444;
         gap: 10px;
+        transition: height 0.2s ease;
 
         .left-icons {
             display: flex;
             align-items: center;
             gap: 5px;
+            height: 45px;
         }
 
         .message-input {
@@ -127,13 +240,19 @@
             background-color: rgba(0, 0, 0, 0.452);
             color: white;
             font-size: 16px;
-            outline: none;
+            resize: none;
+            overflow: scroll;
+            scrollbar-width: none;
+            min-height: 35px;
+            max-height: 100px;
+            line-height: 1.5;
         }
 
         .right-icons {
             display: flex;
             align-items: center;
             gap: 10px;
+            height: 45px;
         }
 
         .icon-btn {
@@ -147,16 +266,16 @@
             width: 30px;
             border-radius: 50%;
         }
-        
+
         .icon {
             width: 22px;
             height: 22px;
             fill: white;
         }
-        
-        .icon:hover{
+
+        .icon:hover {
             font-weight: bold;
-            fill: gray;
+            fill: #1B77FF;
         }
 
         .file-input {
@@ -173,17 +292,31 @@
         }
 
         .send-btn {
-            background-color: #4CAF50;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            background-color: transparent;
             display: flex;
+            color: white;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             border: none;
+
+            & svg {
+                height: 22px;
+                width: 22px;
+            }
+        }
+
+        .send-btn:hover {
+            border-radius: 50%;
+            color: #1B77FF;
         }
     }
 
-
+    .emoji-picker {
+        position: absolute;
+        bottom: 60px;
+        /* Adjust based on your layout */
+        z-index: 1000;
+        /* Ensure it appears above other elements */
+    }
 }

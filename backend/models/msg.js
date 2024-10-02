@@ -1,48 +1,50 @@
 const mongoose = require('mongoose');
+const File = require('./file'); // Import the file schema
 
 const messageSchema = new mongoose.Schema({
     sender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        ref: 'User',
         required: true
     },
     recipient: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
+        ref: 'User',
         required: function () {
-            return !this.grp; // recipient is required if grp is not present
+            return !this.grp;
         }
     },
     grp: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Group', // Reference to the ChatRoom model
+        ref: 'Group',
         required: function () {
-            return !this.recipient; // grp is required if recipient is not present
+            return !this.recipient;
         }
     },
     content: {
         type: String,
-        required: true,
         trim: true,
+    },
+    file: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to the file schema
+        ref: 'File',
+        required: function () {
+            return !!this.content; // Only required if there is no text content
+        }
     },
     timestamp: {
         type: Date,
         default: Date.now
-    },
-    messageType: {
-        type: String,
-        enum: ['text', 'image', 'file'], // Example of message types
-        default: 'text'
     },
     seen: {
         type: Boolean,
         default: false
     }
 }, {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+    timestamps: true
 });
 
-// Ensure that either recipient or grp is present, but not both
+// Pre-validation hook to ensure either recipient or group is provided
 messageSchema.pre('validate', function (next) {
     if (!this.recipient && !this.grp) {
         next(new Error('Either recipient or grp must be specified'));

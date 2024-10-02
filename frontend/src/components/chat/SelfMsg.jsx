@@ -1,16 +1,25 @@
 import React from "react";
 
-function SelfMsg({ message, timeSent, status }) {
+function SelfMsg({ message, file, timeSent, status }) {
   return (
     <div className="self-msg">
       <div className="message-content">
-        <div className="message-text">{message}</div>
+        {/* Display the file if it's present */}
+        {file && file.fileType === 'image' ? (
+          <div className="image-wrapper">
+            <img
+              src={file.fileUrl}
+              alt="Sent Attachment"
+              className="clear-image" // Display the full image since it's already sent
+            />
+          </div>
+        ) : (
+          <div className="message-text">{message}</div>
+        )}
         <div className="message-info">
           <span className="message-time">{timeSent}</span>
-          {/* <div className={`message-status ${status}`}>
-            <img src="/tick.svg" alt="status icon" />
-            {status !== "sent" && <img src="/tick.svg" alt="status icon" />}
-          </div> */}
+          {/* Display message status */}
+          <span className={`message-status ${status}`}>{status}</span>
         </div>
       </div>
     </div>

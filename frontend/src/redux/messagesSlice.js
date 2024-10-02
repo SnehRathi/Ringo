@@ -15,7 +15,7 @@ const messagesSlice = createSlice({
             state.messages = []; // Clears all messages
         },
         addPendingMessage(state, action) {
-            console.log(action.payload);
+            // console.log(action.payload);
             
             // Adds a pending message to the state with an initial status of 'sending'
             state.messages.push({

@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { loginUser, verifyToken, registerUser } = require('../controllers/authControllers');
-const authMiddleware = require('../middleware/authMiddleware');
+const { loginUser, registerUser, verifyToken } = require('../controllers/authControllers');
+const { authMiddleware } = require('../middleware/authMiddleware');
 const { validateRegister, validateLogin } = require('../middleware/validationMiddleware');
 
-// Registration route
+
+// MongoDB Registration route
 router.post('/register', validateRegister, registerUser);
 
-// Login route
+// MongoDB + Firebase Login route
 router.post('/login', validateLogin, loginUser);
 
-// Protected route to verify token
+// Protected route to verify MongoDB JWT token
 router.get('/verify', authMiddleware, verifyToken);
 
 module.exports = router;

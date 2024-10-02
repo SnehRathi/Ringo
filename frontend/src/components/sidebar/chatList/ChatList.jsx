@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./chatList.css";
 import Conversation from "./Conversation";
 import { Link } from 'react-router-dom';
@@ -6,29 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setOpenChat } from '../../../redux/openChatSlice';
 
 const ChatList = () => {
-    const [chats, setChats] = useState([]);
-    const newChat = useSelector((state) => state.newChat); // Get the temporary new chat from Redux
-    const [loading, setLoading] = useState(true);
+    const chats = useSelector((state) => state.chats.chats); // Fetch chats from Redux
+    const newChat = useSelector((state) => state.newChat);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        const fetchChats = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/chat/getUserChats', {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('ringoToken')}` }
-                });
-                const data = await response.json();
-                // console.log(data);
-                setChats(data);
-            } catch (error) {
-                console.error('Error fetching chats:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchChats();
-    }, []);
 
     const handleOpenChat = (chat) => {
         dispatch(setOpenChat({ chat, temporary: false }));
@@ -47,9 +27,6 @@ const ChatList = () => {
                     autoComplete="off"
                 />
             </div>
-
-            {/* Loading indicator */}
-            {loading && <div>Loading...</div>}
 
             <div className="conversations">
                 {/* Display the temporary chat */}
@@ -73,7 +50,7 @@ const ChatList = () => {
                         key={index}
                         to={`/chat/${chat._id}`}
                         className="conversation-link"
-                        onClick={() => handleOpenChat(chat)} // Pass the full chat object
+                        onClick={() => handleOpenChat(chat)} 
                     >
                         <Conversation
                             key={chat._id}

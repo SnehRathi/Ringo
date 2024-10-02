@@ -1,48 +1,45 @@
-const User = require('../models/user'); // Import your User model
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-
-// Load environment variables from .env file
-dotenv.config();
+const bcrypt = require('bcryptjs');
+const User = require('../models/user'); // Your User model
+const admin = require('../config/firebaseAdmin')
 
 // Login controller
 const loginUser = async (req, res) => {
     const { password, username } = req.body;
 
     try {
-        // Check if the user exists
+        // Check if the user exists in MongoDB
         let user = await User.findOne({ username });
 
         if (!user) {
-            // If user doesn't exist, throw an error
             return res.status(400).json({ message: 'User does not exist' });
-        } else {
-            // Compare the provided password with the hashed password in the database
-            const isMatch = await bcrypt.compare(password, user.passwordHash);
-            if (!isMatch) {
-                return res.status(400).json({ message: 'Invalid username or password' });
-            }
         }
 
-        // Create a JWT token
+        // Compare the provided password with the hashed password in the database
+        const isMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid username or password' });
+        }
+
+        // Generate a JWT token for MongoDB authentication
         const token = jwt.sign(
             { _id: user._id, username: user.username },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' } // Token expires in 1 hour
-            // {expiresIn: '30d'}  Token expires in 30 days
+            { expiresIn: '30d' }
         );
 
-        // Convert the Mongoose document to a plain JavaScript object
-        let userData = user.toObject();
+        // Generate a Firebase custom token
+        const firebaseToken = await admin.auth().createCustomToken(user._id.toString());
 
-        // Remove the password hash field
+        // Prepare user data excluding the password hash
+        let userData = user.toObject();
         delete userData.passwordHash;
 
-        // Respond with user data and token
+        // Send both MongoDB JWT and Firebase custom token to the client
         res.status(200).json({
             user: userData,
-            token: token
+            token: token,
+            firebaseToken: firebaseToken
         });
     } catch (error) {
         console.error('Error during login:', error);
@@ -50,30 +47,30 @@ const loginUser = async (req, res) => {
     }
 };
 
-// Registration controller
+// Registration Controller (MongoDB)
 const registerUser = async (req, res) => {
     const { email, contactNumber, username, password } = req.body;
+
     try {
-        // Check if email, username, or phone number already exists in the database
+        // Check if email, username, or phone number already exists in MongoDB
         let existingUser = await User.findOne({
             $or: [
                 { email: email },
                 { username: username },
-                { contactNumber: contactNumber }
-            ]
-        });        
+                { contactNumber: contactNumber },
+            ],
+        });
+
         if (existingUser) {
             let errorMessage = '';
             if (existingUser.email === email) errorMessage += 'Email already exists. ';
-            else if (existingUser.username === username) errorMessage += 'Username already exists. ';
-            else if (existingUser.contactNumber === contactNumber) errorMessage += 'Phone number already exists. ';
+            if (existingUser.username === username) errorMessage += 'Username already exists. ';
+            if (existingUser.contactNumber === contactNumber) errorMessage += 'Phone number already exists. ';
             return res.status(400).json({ message: errorMessage.trim() });
         }
 
-        // Hash the password
+        // Hash the password and create a new MongoDB user
         const hashedPassword = await bcrypt.hash(password, 12);
-
-        // Create a new user
         const newUser = new User({
             email,
             contactNumber,
@@ -81,62 +78,51 @@ const registerUser = async (req, res) => {
             passwordHash: hashedPassword,
         });
 
-        // Save the user to the database
         await newUser.save();
 
-        let userData = newUser.toObject();
+        // Generate a Firebase custom token
+        const firebaseToken = await admin.auth().createCustomToken(newUser._id.toString());
 
-        // Remove the password hash field
+        const userData = newUser.toObject();
         delete userData.passwordHash;
 
-        // Generate a JWT token
+        // Generate a JWT token for MongoDB
         const token = jwt.sign(
             { _id: newUser._id, username: userData.username },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '30d' }
         );
 
-        console.log(userData);
-        // Respond with the user data and token
+        // Send both MongoDB JWT and Firebase custom token to the client
         res.status(201).json({
             user: userData,
-            token: token
+            token,
+            firebaseToken
         });
     } catch (error) {
+        console.error('Error during registration:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
-// Verify token controller
+// Verify MongoDB JWT token
 const verifyToken = async (req, res) => {
-    // console.log("Verify Route Called");
-    const token = req.headers['authorization']?.split(' ')[1]; // Extract token from Authorization header
-
+    const token = req.headers['authorization']?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
     try {
-        // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // bring the data of user other than the password
         const user = await User.findById(decoded._id).select('-passwordHash');
-
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Respond with user data
-        res.status(200).json({
-            user: user
-        });
+        res.status(200).json({ user });
     } catch (error) {
-        res.status(401).json({ message: 'Invalid or expired token' });
+        return res.status(401).json({ message: 'Invalid or expired token' });
     }
 };
 
-module.exports = {
-    loginUser,
-    verifyToken,
-    registerUser
-};
+module.exports = { loginUser, registerUser, verifyToken };

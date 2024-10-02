@@ -6,6 +6,8 @@ import { setUser } from '../../redux/userSlice'; // Adjust the import path as ne
 import VisibilityIcon from '@mui/icons-material/Visibility'; // Assuming you're using Material-UI
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
+import { signInWithCustomToken } from "firebase/auth";
+import { auth } from '../../firebaseConfig'; // Adjust the path as necessary
 
 function Register() {
     const [step, setStep] = useState(1);
@@ -49,17 +51,21 @@ function Register() {
             }
 
             const data = await response.json();
-            const { user, token } = data;
-            // Store the token in localStorage
+            const { user, token, firebaseToken } = data; // Get firebaseToken
+
+            // Store the MongoDB token in localStorage
             localStorage.setItem('ringoToken', token);
             console.log('Registration successful:', data);
+
+            // Authenticate with Firebase
+            await signInWithCustomToken(auth, firebaseToken); // Sign in with Firebase custom token
 
             // Set the user state with the received data
             dispatch(setUser(user));
 
             // Hide loader
             setLoading(false);
-            // navigate to the home
+            // Navigate to the home page
             navigate('/');
         } catch (err) {
             setLoading(false); // Hide loader on error

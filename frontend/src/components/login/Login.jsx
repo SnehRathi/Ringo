@@ -5,9 +5,9 @@ import './login.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { setUser } from '../../redux/userSlice'; // Adjust the path as necessary
-// import CircularProgress from '@mui/material/CircularProgress';  -> can use as loader
 import Alert from '@mui/material/Alert';
-
+import { signInWithCustomToken } from "firebase/auth";
+import { auth } from '../../firebaseConfig'; // Adjust the path as necessary
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -16,61 +16,56 @@ function Login() {
     const [error, setError] = useState(''); // To handle error messages
     const [loading, setLoading] = useState(false); // To handle loader visibility
 
+    // console.log(auth);
+    // console.log(signInWithCustomToken);
+    
+    
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize useNavigate
 
     async function handleLogin(e) {
         e.preventDefault();
-        setLoading(true); // Show loader when submitting
-        setError(''); // Reset error message
-    
-        // Check if the password is empty
+        setLoading(true);
+        setError('');
+
         if (!password.trim()) {
-            setLoading(false); // Hide loader if there is an immediate error
+            setLoading(false);
             setError('Password cannot be empty');
             return;
         }
-    
+
         try {
-            // Send a POST request to the backend login route using fetch
             const response = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }), // Make sure to send the correct payload
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
             });
-    
-            // Check if the response is OK (status code 200-299)
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to login');
             }
-    
-            // Extract user data and token from response
+
             const data = await response.json();
-            const { user, token } = data;
-    
-            // Save the token in local storage
+            const { user, token, firebaseToken } = data;
+
+            // Save MongoDB JWT token
             localStorage.setItem('ringoToken', token);
-            // console.log(user);
-    
-            // Dispatch action to set the user in the Redux store
+            // Dispatch the user data to Redux
             dispatch(setUser({ ...user, token }));
-            // console.log(user);
-    
-            // Clear error message
-            setError('');
-    
-            // Navigate to the home route
-            navigate('/', { replace: true }); // Replace history entry to prevent going back to login
+            console.log(user);
+            
+            // Authenticate using the custom token
+            await signInWithCustomToken(auth, firebaseToken);
+
+            navigate('/', { replace: true });
         } catch (err) {
-            // Handle error (e.g., incorrect credentials)
             setError(err.message || 'An error occurred');
+            console.error('Login error:', err); // Debug log
         } finally {
-            setLoading(false); // Hide loader on completion
+            setLoading(false);
         }
-    }    
+    }
 
     return (
         <div className="login-page">
@@ -120,7 +115,6 @@ function Login() {
                             Login
                         </button>
                     )}
-                    {/* {error && <p className="error-message">{error}</p>} Display error message */}
                     {error && <Alert severity="error">{error}</Alert>}
                     <div className="forgot-password">
                         <span>Forgot Password?</span>

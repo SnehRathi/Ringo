@@ -2,6 +2,7 @@ const Chat = require('../models/chat'); // Import the Chat model
 const User = require('../models/user'); // Import the User model
 const Message = require('../models/msg'); // Import the Msg model
 
+// Create a chat or return the existing one
 const createTemporaryChat = async (req, res) => {
     const recipientId = req.body.recipient_id;
     const senderId = req.params.send_id;
@@ -14,7 +15,7 @@ const createTemporaryChat = async (req, res) => {
         });
 
         if (chat) {
-            // Fetch user data for both participants to include in the response
+            // Fetch user data for both participants
             const sender = await User.findById(senderId).select('username profilePicture');
             const recipient = await User.findById(recipientId).select('username profilePicture');
 
@@ -23,17 +24,29 @@ const createTemporaryChat = async (req, res) => {
                     ...chat.toObject(),
                     participants: [sender, recipient],
                 },
-                isTemporary: false,  // Chat is already persisted in DB
+                isTemporary: false,  // Existing chat in DB
                 message: 'Existing chat found',
             });
         }
 
-        // Don't save the chat yet, just return it as temporary
-        const temporaryChat = {
+        // Create a new chat instance
+        const newChat = new Chat({
             participants: [senderId, recipientId],
             isGroupChat: false,
             messages: [], // No messages initially
-        };
+        });
+
+        // Save the new chat to the database
+        await newChat.save();
+
+        // Add chat reference to both users' chat lists
+        await User.findByIdAndUpdate(senderId, {
+            $push: { chats: { chatId: newChat._id } }
+        });
+
+        await User.findByIdAndUpdate(recipientId, {
+            $push: { chats: { chatId: newChat._id } }
+        });
 
         // Fetch user data for both participants
         const sender = await User.findById(senderId).select('username profilePicture');
@@ -41,11 +54,11 @@ const createTemporaryChat = async (req, res) => {
 
         return res.status(201).json({
             chat: {
-                ...temporaryChat,
+                ...newChat.toObject(),
                 participants: [sender, recipient],
             },
-            isTemporary: true,
-            message: 'Temporary chat created, not saved to DB until a message is sent',
+            isTemporary: true, // Chat is created but no messages are sent yet
+            message: 'New temporary chat created',
         });
     } catch (error) {
         console.error('Error creating temporary chat:', error);
@@ -53,48 +66,72 @@ const createTemporaryChat = async (req, res) => {
     }
 };
 
+// Discard a temporary chat if no message has been sent
 const discardTemporaryChat = async (req, res) => {
     const chatId = req.params.chatId;
     const senderId = req.params.senderId;
 
     try {
-        // Remove chat from sender's chat array
-        await User.updateOne(
-            { _id: senderId },
-            { $pull: { chats: { chatId } } }
-        );
+        // Check if the chat exists and has no messages
+        const chat = await Chat.findById(chatId).populate('messages');
 
-        // Delete the chat from the Chat collection
-        await Chat.findByIdAndDelete(chatId);
+        if (chat && chat.messages.length === 0) {
+            // Remove chat from both users' chat lists
+            await User.updateOne(
+                { _id: senderId },
+                { $pull: { chats: { chatId } } }
+            );
 
-        res.status(200).json({ message: 'Temporary chat discarded' });
+            await User.updateOne(
+                { _id: chat.participants.find(id => id !== senderId) },
+                { $pull: { chats: { chatId } } }
+            );
+
+            // Delete the chat from the Chat collection
+            await Chat.findByIdAndDelete(chatId);
+
+            return res.status(200).json({ message: 'Temporary chat discarded' });
+        } else {
+            return res.status(400).json({ message: 'Chat cannot be discarded, it contains messages' });
+        }
     } catch (error) {
         console.error('Error discarding temporary chat:', error);
         res.status(500).json({ message: 'Error discarding temporary chat' });
     }
 };
 
-
-
 // Get all user chats
 const getUserChats = async (req, res) => {
     const userId = req.user._id;
 
     try {
+        // Get the user's chat list
         const user = await User.findById(userId).select('chats');
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        // Get the chat IDs for the user
         const chatIds = user.chats.map(chat => chat.chatId);
 
+        // Fetch the chat details and populate related fields
         const chats = await Chat.find({ _id: { $in: chatIds } })
-            .populate('participants', 'username profilePicture status')
-            .populate('lastMessage', 'content sender createdAt') // Populate last message details
-            .populate('messages');
+            .populate('participants', 'username profilePicture status') // Fetch participants details
+            .populate({
+                path: 'messages', // Fetch messages
+                populate: {
+                    path: 'file', // Fetch file details within messages
+                    select: 'fileUrl fileType fileMimeType isDownloaded timestamp', // Specify file fields to retrieve
+                },
+            })
+            .populate('lastMessage', 'content sender createdAt') // Fetch last message details
+            .exec(); // Execute the query
+
+        // Send the populated chats as the response
         res.json(chats);
     } catch (error) {
+        console.error('Error fetching user chats:', error);
         res.status(500).json({ message: 'Error fetching user chats' });
     }
 };

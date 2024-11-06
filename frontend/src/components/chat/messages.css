@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+.other-msg {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    .message-content {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 4px 10px;
+        border-radius: 10px;
+        min-width: 30%;
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 10px rgba(65, 65, 65, 0.2);
+
+        .sender-name {
+            font-size: 0.8rem;
+            color: #7799c3;
+            font-family: "Roboto", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            text-align: left;
+        }
+
+        .message-text {
+            margin-top: 2px;
+            font-size: 0.85rem;
+            color: #ffffff;
+            align-self: flex-start;
+            font-family: "Open Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .message-time {
+            font-size: 0.6rem;
+            color: white;
+            font-family: "Roboto", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            align-self: flex-end;
+        }
+
+        /* Image styles */
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 5px;
+
+            .blurred-image {
+                filter: blur(10px);
+                cursor: pointer;
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                transition: filter 0.3s ease;
+            }
+
+            .clear-image {
+                filter: none;
+                cursor: pointer;
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .download-button {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #4CAF50;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+}
+
+/* Self Msg */
+.self-msg {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-end;
+    /* Align to the right for self messages */
+
+    .message-content {
+        background-color: rgb(49, 93, 66);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 4px 8px;
+        border-radius: 10px;
+        min-width: 30%;
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 10px rgba(65, 65, 65, 0.2);
+
+        .message-text {
+            font-size: 0.85rem;
+            color: #ffffff;
+            align-self: flex-start;
+            font-family: "Open Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-top: 5px;
+
+            .clear-image {
+                filter: none;
+                cursor: pointer;
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+            }
+        }
+
+        & .message-info {
+            align-self: flex-end;
+
+            .message-time {
+                font-size: 0.6rem;
+                color: white;
+                font-family: "Roboto", sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                align-self: flex-end;
+                text-align: right;
+            }
+        }
+    }
+}

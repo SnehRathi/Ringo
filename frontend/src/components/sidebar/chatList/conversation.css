@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.conversation {
+    display: flex;
+    padding: 10px 10px;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid gray;
+    flex: 1;
+    height: 65px;
+    border-radius: 8px;
+    position: relative; /* So unread count can be positioned on top */
+}
+
+.conversation img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username-lastmsg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    flex: 1;
+    height: 45px;
+}
+
+.username-time,.lastmsg-unread-count {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.username {
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    color: white;
+}
+
+.last-msg-time {
+    font-size: 0.8rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    color: #ccc; /* Lighter color for time */
+}
+
+.last-msg {
+    font-size: 0.8rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    color: #bbb; /* Slightly lighter color for message */
+}
+
+.unread-count {
+    background-color: #f00; /* Red circle for unread messages */
+    color: white;
+    font-size: 0.8rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conversation:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.active-chat {
+    background-color: #3838389a;
+    color: white;
+}
+
+.active-chat:hover{
+    background-color: #3838387b;
+    /* background-color: #4b535c41; */
+}

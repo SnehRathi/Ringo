@@ -1,0 +1,95 @@
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+
+    a {
+        text-decoration: none;
+    }
+
+    .user {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .username {
+            font-size: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            color: white;
+        }
+    }
+
+    .icons {
+        display: flex;
+        gap: 12px;
+
+        .icon {
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+                color: #949494; 
+            }
+        }
+    }
+}
+
+/* Dropdown Styling */
+.dropdown-menu {
+    position: absolute;
+    top: 45px; /* Positioned just below the icons */
+    right: 5px; /* Align to the right of the container */
+    z-index: 1000;
+    background-color: #0062f5;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    color: white;
+}
+.modal-box{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.modal-box h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dropdown-button {
+    font-size: 16px;
+    padding: 4px 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &:first-child {
+        margin-bottom: 10px;
+    }
+}
+
+.modal-box button:hover {
+    background-color: #f0f0f0;
+}

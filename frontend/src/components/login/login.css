@@ -1,0 +1,181 @@
+.login-page {
+    background: rgba(25, 25, 25, 0.9);
+    filter: saturate(180%);
+    height: 90vh;
+    width: 75vw;
+    border-radius: 5px;
+    display: flex;
+
+    /* Left side showing the Branding */
+    .left-side {
+        flex: 0.4;
+
+        .brand {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+
+            img {
+                height: 50%;
+                caret-color: transparent;
+            }
+
+            span {
+                max-width: 60%;
+                font-size: 1.1rem;
+                white-space: normal;
+                overflow-wrap: break-word;
+                word-break: keep-all;
+                color: white;
+                font-family: 'Pacifico', cursive;
+            }
+        }
+    }
+
+    /* Right Side of the Login Page */
+    .right-side {
+        flex: 0.6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-left: 1px solid gray;
+        padding: 20px;
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+
+            h2 {
+                font-family: 'Roboto', sans-serif;
+                font-size: 1.5rem;
+                color: white;
+                text-align: center;
+            }
+
+            .input-field {
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                outline: none;
+                background: rgba(215, 215, 215, 0.74);
+                font-family: 'Roboto', sans-serif;
+                font-size: 1rem;
+            }
+            .input-field:focus{
+                border: 1px solid black;
+                background: rgba(255, 255, 255, 0.9);
+            }
+
+            .input-field::placeholder{
+                color: rgba(0, 0, 0, 0.619);
+            }
+
+            .password-field-container {
+                position: relative;
+
+                .input-field {
+                    width: 100%;
+                }
+
+                .toggle-password {
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .toggle-password img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+
+
+
+            .login-button {
+                padding: 10px;
+                border-radius: 5px;
+                border: none;
+                background: #1B77FF;
+                color: white;
+                font-family: 'Roboto', sans-serif;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background-color 0.1s ease;
+
+                &:hover {
+                    background-color: #073b94;
+                }
+            }
+
+            .loading-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                width: 100%;
+                margin-top: 10px;
+
+                .loading-spinner {
+                    border: 4px solid rgba(0, 0, 0, 0.1);
+                    border-left-color: #3498db;
+                    border-radius: 50%;
+                    width: 36px;
+                    height: 36px;
+                    animation: spin 1s linear infinite;
+                }
+            }
+
+
+            .forgot-password {
+                font-size: 0.8rem;
+                color: #ccc;
+                cursor: pointer;
+                font-family: 'Roboto', sans-serif;
+                display: flex;
+                justify-content: flex-end;
+
+                & span {
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        bottom: -2px;
+                        width: 0;
+                        height: 1.5px;
+                        background-color: #ccc;
+                    }
+
+                    &:hover::after {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

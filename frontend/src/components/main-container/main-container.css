@@ -1,0 +1,8 @@
+.main-container {
+    background: rgba(25, 25, 25, 0.9);
+    filter: saturate(180%);
+    height: 95vh;
+    width: 85vw;
+    border-radius: 5px;
+    display: flex;
+}

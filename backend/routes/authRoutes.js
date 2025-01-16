@@ -5,6 +5,7 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 const { validateRegister, validateLogin } = require('../middleware/validationMiddleware');
 
 
+
 // MongoDB Registration route
 router.post('/register', validateRegister, registerUser);
 

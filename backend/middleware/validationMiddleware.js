@@ -17,7 +17,7 @@ const validateRegister = [
 
 // Middleware for validating login data
 const validateLogin = [
-    body('username').notEmpty().withMessage('Username is required'),
+    body('credential').notEmpty().withMessage('Email or Username is required'),
     body('password').notEmpty().withMessage('Password is required'),
     (req, res, next) => {
         const errors = validationResult(req);
@@ -27,6 +27,8 @@ const validateLogin = [
         next();
     }
 ];
+
+
 
 module.exports = {
     validateRegister,

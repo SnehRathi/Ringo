@@ -12,32 +12,25 @@ import { ReactComponent as Videocam } from '../../svgs/videocam.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import MessageSection from './MessageSection';
 import { v4 as uuidv4 } from 'uuid';
-import { io } from 'socket.io-client';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { storage } from '../../firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { addPendingMessage, setMessages } from '../../redux/openChatSlice';
-import { addMessageToChat } from '../../redux/chatsSlice';
+import { addMessageToChatForSender } from '../../redux/chatsSlice';
 import { clearNewChat } from '../../redux/newChatSlice';
 
-const socket = io('http://localhost:5000');
-
-function Chat() {
+function Chat({ socket }) {
     const dispatch = useDispatch();
     const openChat = useSelector((state) => state.openChat.chat);
-    const isTemporary = useSelector((state) => state.openChat.temporary);
     const currentUser = useSelector((state) => state.user.user);
-
     const receiver = openChat?.participants?.find((p) => p._id !== currentUser._id);
     const [message, setMessage] = useState('');
-    const [files, setFiles] = useState(null);
-    const [fileType, setFileType] = useState('');
-    const [selectedFileIndex, setSelectedFileIndex] = useState(0);
+    const [files, setFiles] = useState([]);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef(null);
     const emojiButtonRef = useRef(null);
 
+    // Handle clicking outside the emoji picker
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -51,122 +44,92 @@ function Chat() {
         };
 
         document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Receive and Send Functions 
-    useEffect(() => {
-        if (currentUser) {
-            socket.on('connect', () => {
-                console.log('Connected to Socket.IO server with ID:', socket.id);
-            });
-
-            // Join a room based on the current user's ID
-            socket.emit('joinRoom', currentUser._id);
-
-            // Listen for messages
-            socket.on('receiveMessage', (msg) => {
-                console.log('Message received:', msg); // Log message for debugging
-
-                // Dispatch to add the message to the specific chat in Redux
-                // When adding a message to the chat
-                dispatch(addMessageToChat(msg));
-
-                // Also update the open chat if it matches the current open chat
-                const currentChatId = openChat?._id; // Get the currently open chat ID
-                if (currentChatId === msg.chat) {
-                    // Update the messages in the openChat slice
-                    dispatch(setMessages([...openChat.messages, msg]));
-                }
-            });
-
-            return () => {
-                socket.off('receiveMessage'); // Cleanup the listener on unmount
-            };
-        }
-    }, [currentUser, dispatch, openChat]); // Ensure openChat is included in the dependency array
-
+    // Handle sending messages
     const sendMessage = async () => {
-        if (files && files.length > 0) {
-            const userId = currentUser._id;
-            const tempFiles = files;
-            setFiles([]); // Clear all files after sending
-            setFileType([]);
+        if (!socket) {
+            console.error("Socket is not connected");
+            return;
+        }
 
-            // Reset the file input after sending files
-            const fileInput = document.getElementById('file-upload');
-            if (fileInput) {
-                fileInput.value = ''; // Reset the input value
-            }
+        const tempId = uuidv4();
+        const isTemporary = !openChat._id;
+
+        if (files.length > 0) {
+            const userId = currentUser._id;
+            const tempFiles = [...files];
+            setFiles([]); // Clear files after initiating upload
 
             for (const fileItem of tempFiles) {
                 const fileRef = ref(storage, `chatFiles/${userId}/${uuidv4()}_${fileItem.name}`);
-
                 try {
-                    // Upload the file to Firebase Storage
                     await uploadBytes(fileRef, fileItem);
                     const fileUrl = await getDownloadURL(fileRef);
 
-                    // Create the file object to send with the message
                     const fileObject = {
                         fileUrl,
-                        fileType: fileItem.type.split('/')[0], // File type like 'image', 'video', etc.
-                        fileMimeType: fileItem.type // Actual MIME type like 'image/jpeg', 'video/mp4', etc.
+                        fileType: fileItem.type.split('/')[0],
+                        fileMimeType: fileItem.type,
                     };
 
-                    const tempId = uuidv4();
-                    dispatch(addPendingMessage({
+                    const newMessage = {
                         tempId,
+                        chat: openChat._id,
                         sender: currentUser._id,
-                        content: fileItem.name, // Set the filename as content or any other description
+                        content: fileItem.name,
                         file: fileObject,
                         timestamp: new Date().toISOString(),
-                    }));
+                        status: 'sent',
+                    };
 
-                    // Emit the message with the file object via Socket.IO
+                    // Add message locally to the sender's open chat area
+                    dispatch(addMessageToChatForSender({ message: newMessage, currentUserId: currentUser._id }));
+
+                    // Emit message to the server
                     socket.emit('sendMessage', {
-                        tempId, // Send the tempId to track the message status
-                        chatId: openChat._id, // Now sending the chatId to the backend
+                        tempId,
+                        chatId: openChat._id,
                         senderId: currentUser._id,
-                        file: fileObject, // Send the entire file object
+                        file: fileObject,
+                        content: fileItem.name,
                         isTemporary,
                     });
-
                 } catch (error) {
                     console.error('File upload failed:', error);
                 }
             }
-            if (isTemporary) {
-                dispatch(clearNewChat());
-            }
+
+            if (isTemporary) dispatch(clearNewChat());
         } else if (message.trim()) {
-            const tempId = uuidv4();
-            dispatch(addPendingMessage({
+            const newMessage = {
                 tempId,
+                chat: openChat._id,
                 sender: currentUser._id,
                 content: message,
                 timestamp: new Date().toISOString(),
-            }));
+                status: 'sending',
+            };
 
-            // Emit the text message via Socket.IO
+            console.log(newMessage)
+            // Add message locally to the sender's open chat area
+            dispatch(addMessageToChatForSender({ message: newMessage, currentUserId: currentUser._id }));
+
+            // Emit message to the server
             socket.emit('sendMessage', {
-                tempId, // Send the tempId to track the message status
-                chatId: openChat._id, // Now sending the chatId to the backend
+                tempId,
+                chatId: openChat._id,
                 senderId: currentUser._id,
                 content: message,
                 isTemporary,
             });
 
-            setMessage(''); // Clear the input message after sending
+            setMessage('');
         }
     };
 
-    const toggleEmojiPicker = () => {
-        setShowEmojiPicker((prev) => !prev);
-    };
+    const toggleEmojiPicker = () => setShowEmojiPicker((prev) => !prev);
 
     const handleMessageChange = (e) => {
         const target = e.target;
@@ -183,36 +146,20 @@ function Chat() {
     };
 
     const handleFileChange = (e) => {
-        const selectedFiles = Array.from(e.target.files); // Convert FileList to an array
-        console.log(selectedFiles);
-
+        const selectedFiles = Array.from(e.target.files);
         if (selectedFiles.length > 0) {
-            setFiles(selectedFiles); // Set all selected files to state
-            setFileType(selectedFiles.map(file => file.type.split('/')[0])); // Set file types for each file
+            setFiles(selectedFiles);
         }
     };
+
     const handleRemoveFile = (index) => {
         const updatedFiles = files.filter((_, i) => i !== index);
         setFiles(updatedFiles);
-
-        // Reset the file input
-        const fileInput = document.getElementById('file-upload');
-        if (fileInput) {
-            fileInput.value = ''; // Reset the input value
-        }
     };
 
-    // const handleFileSelection = (index) => {
-    //     setSelectedFileIndex(index); // Set the selected file index
-    // };
+    const handleEmojiSelect = (emoji) => setMessage((prev) => prev + emoji.native);
 
-    const handleEmojiSelect = (emoji) => {
-        setMessage((prev) => prev + emoji.native);
-    };
-
-    if (!openChat || !receiver) {
-        return null;
-    }
+    if (!openChat || !receiver) return null;
 
     return (
         <div className="chat">
@@ -241,8 +188,8 @@ function Chat() {
                 </div>
             )}
 
-            {files && files.map((fileItem, index) => (
-                <div key={index} className={`attachment-preview ${files.length > 0 ? 'preview-visible' : ''}`}>
+            {files.map((fileItem, index) => (
+                <div key={index} className="attachment-preview">
                     <div className="attachment-details">
                         {fileItem.type.includes('image') ? (
                             <img src={URL.createObjectURL(fileItem)} alt={`Attachment Preview ${index}`} />
@@ -265,7 +212,6 @@ function Chat() {
                             </div>
                         ) : (
                             <div className="attachment-icon">
-                                <img src="/path-to-your-file-icon.svg" alt="File Icon" style={{ height: '50px' }} />
                                 <p>{fileItem.name}</p>
                                 <p>{(fileItem.size / 1024).toFixed(2)} KB</p>
                                 <p>{fileItem.type}</p>

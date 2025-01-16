@@ -1,6 +1,6 @@
 import React from 'react';
 import './sidebar.css'
-import UserInfo from './userInfo/UserInfo';
+import UserInfo from './UserInfo';
 import ChatList from './chatList/ChatList';
 function Sidebar() {
     return (

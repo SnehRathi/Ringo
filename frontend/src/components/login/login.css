@@ -1,4 +1,4 @@
-.login-page {
+.login-page,.reset-password {
     background: rgba(25, 25, 25, 0.9);
     filter: saturate(180%);
     height: 90vh;
@@ -9,7 +9,6 @@
     /* Left side showing the Branding */
     .left-side {
         flex: 0.4;
-
         .brand {
             height: 100%;
             width: 100%;
@@ -48,7 +47,7 @@
         border-left: 1px solid gray;
         padding: 20px;
 
-        .login-form {
+        .login-form,.reset-password-form {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -147,6 +146,7 @@
                 font-family: 'Roboto', sans-serif;
                 display: flex;
                 justify-content: flex-end;
+                text-decoration: none;
 
                 & span {
                     position: relative;
@@ -157,7 +157,7 @@
                         right: 0;
                         bottom: -2px;
                         width: 0;
-                        height: 1.5px;
+                        height: 1px;
                         background-color: #ccc;
                     }
 
@@ -178,4 +178,13 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+/* Styles for the reset password page */
+.go-back-to-otp{
+    text-decoration: underline;
+    color: black;
+}
+.go-back-to-otp:hover{
+    color: white;
 }

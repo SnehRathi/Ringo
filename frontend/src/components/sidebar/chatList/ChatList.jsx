@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from "react";
-import "./chatList.css";
+import "../sidebar.css";
 import Conversation from "./Conversation";
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setOpenChat } from '../../../redux/openChatSlice';
-import Skeleton from 'react-loading-skeleton'; 
-import 'react-loading-skeleton/dist/skeleton.css'; 
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenChat } from "../../../redux/openChatSlice";
+import { addMessageToChat } from "../../../redux/chatsSlice";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const ChatList = () => {
     const chats = useSelector((state) => state.chats.chats); // Fetch chats from Redux
     const newChat = useSelector((state) => state.newChat);
     const openChat = useSelector((state) => state.openChat.chat); // Get currently open chat
+    const user = useSelector((state) => state.user.user);
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] = useState(true); 
-
+    // Handle loading state
     useEffect(() => {
-        if (chats.length > 0) {
-            setLoading(false); 
-        }
+        setLoading(chats.length === 0);
     }, [chats]);
 
+    // Handle opening a chat
     const handleOpenChat = (chat) => {
         dispatch(setOpenChat({ chat, temporary: false }));
     };
@@ -28,7 +29,9 @@ const ChatList = () => {
     return (
         <div className="chat-list">
             <div className="search-bar">
-                <label htmlFor="user-search-bar"><img src="/search.png" alt="Search icon" /></label>
+                <label htmlFor="user-search-bar">
+                    <img src="/search.png" alt="Search icon" />
+                </label>
                 <input
                     type="text"
                     id="user-search-bar"
@@ -51,11 +54,11 @@ const ChatList = () => {
                     ))
                 ) : (
                     <>
-                        {/* Display the temporary chat */}
+                        {/* Render temporary chat if exists */}
                         {newChat && (
                             <Link
                                 to={`/chat/${newChat._id}`}
-                                className={`conversation-link`}
+                                className="conversation-link"
                                 onClick={() => handleOpenChat(newChat)}
                             >
                                 <Conversation
@@ -65,28 +68,24 @@ const ChatList = () => {
                             </Link>
                         )}
 
-                        {/* Display existing chats */}
-                        {chats.map((chat, index) => {
-                            // console.log(chat);
-                            return (
-                                <Link
-                                    key={index}
-                                    to={`/chat/${chat._id}`}
-                                    className={`conversation-link`}
-                                    onClick={() => handleOpenChat(chat)}
-                                >
-                                    <Conversation
-                                        key={chat._id}
-                                        chat={chat._id}
-                                        participants={chat.participants}
-                                        lastMessage={chat.lastMessage ? chat.lastMessage.content : null}
-                                        unreadCount={chat.unreadCount}
-                                        lastMessageDate={chat.lastMessage ? chat.lastMessage.createdAt : null}
-                                        isChatOpen = {openChat && openChat._id === chat._id}
-                                    />
-                                </Link>
-                            );
-                        })}
+                        {/* Render all existing chats */}
+                        {chats.map((chat) => (
+                            <Link
+                                key={chat._id}
+                                to={`/chat/${chat._id}`}
+                                className="conversation-link"
+                                onClick={() => handleOpenChat(chat)}
+                            >
+                                <Conversation
+                                    chat={chat._id}
+                                    participants={chat.participants}
+                                    lastMessage={chat.lastMessage?.content}
+                                    unreadCount={chat.unreadCount}
+                                    lastMessageDate={chat.lastMessage?.createdAt}
+                                    isChatOpen={openChat?._id === chat._id}
+                                />
+                            </Link>
+                        ))}
                     </>
                 )}
             </div>

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import './userInfo.css';
+import './sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../../redux/userSlice'; // Adjust path
-import { clearOpenChat } from '../../../redux/openChatSlice'; // Adjust path
-import { auth } from '../../../firebaseConfig'; // Firebase config
+import { logout } from '../../redux/userSlice'; // Adjust path
+import { clearOpenChat } from '../../redux/openChatSlice'; // Adjust path
+import { clearChats } from '../../redux/chatsSlice'; // Import the action to clear chats
+import { auth } from '../../firebaseConfig'; // Firebase config
 import { signOut } from "firebase/auth"; // Firebase signOut method
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -21,8 +22,6 @@ function UserInfo() {
     const dropdownRef = useRef(null); // Reference to the dropdown
     const settingsButtonRef = useRef(null); // Create a reference for the settings button
 
-    const handleOpen = () => setOpen(!open); // Toggle the dropdown
-
     const handleLogout = async () => {
         try {
             // Sign out from Firebase
@@ -30,6 +29,7 @@ function UserInfo() {
 
             // Clear Redux store and localStorage
             dispatch(logout());
+            dispatch(clearChats()); // Clear chats on logout
             dispatch(clearOpenChat());
 
             // Redirect to login page
@@ -49,14 +49,12 @@ function UserInfo() {
     // Close the dropdown if clicked outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Check if the click is outside both the dropdown and the settings button
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target) &&
-                settingsButtonRef.current &&
-                !settingsButtonRef.current.contains(event.target)
-            ) {
-                setOpen(false); // Close dropdown if clicked outside
+            const clickedOutsideDropdown = !dropdownRef.current?.contains(event.target);
+            const clickedOutsideButton = !settingsButtonRef.current?.contains(event.target);
+
+            // Close the dropdown only if the click is outside both the dropdown and the button
+            if (clickedOutsideDropdown && clickedOutsideButton) {
+                setOpen(false);
             }
         };
 
@@ -66,7 +64,15 @@ function UserInfo() {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [dropdownRef]);
+    }, []);
+
+    const handleOpen = (event) => {
+        event.preventDefault(); // Prevent default behavior
+        event.stopPropagation(); // Prevent the click from bubbling to the document listener
+
+        // Toggle dropdown state
+        setOpen((prevOpen) => !prevOpen);
+    };
 
     const handleClearOpenChat = () => {
         dispatch(clearOpenChat()); // Dispatch the action to clear open chat
@@ -85,7 +91,11 @@ function UserInfo() {
                     <PersonAddAlt1Icon className="icon" />
                 </Link>
                 <GroupAddIcon className="icon" />
-                <SettingsIcon className="icon" onClick={handleOpen} />
+                <SettingsIcon
+                    ref={settingsButtonRef}
+                    className="icon"
+                    onClick={handleOpen}
+                />
             </div>
             {/* Dropdown Settings */}
             {open && (

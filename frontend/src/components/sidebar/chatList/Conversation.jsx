@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from 'react-redux';
 import './conversation.css';
 
-function Conversation({ chat, participants, lastMessage, unreadCount, lastMessageDate,isChatOpen }) {
+function Conversation({ participants, lastMessage, unreadCount, lastMessageDate,isChatOpen }) {
     const loggedInUser = useSelector((state) => state.user.user);
 
     // Find the recipient by filtering out the logged-in user

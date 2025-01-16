@@ -5,7 +5,7 @@ import AddUserItem from './AddUserItem';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 import { clearOpenChat, setOpenChat } from '../../redux/openChatSlice';
-import { setNewChat } from '../../redux/newChatSlice';
+import { addChat } from '../../redux/chatsSlice';
 
 function AllUsers() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -13,15 +13,16 @@ function AllUsers() {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user); // Fetch user data from Redux
-    const openChat = useSelector((state) => state.openChat); // Get the currently opened chat from Redux
+    const user = useSelector((state) => state.user.user);
+    const chats = useSelector((state) => state.chats.chats);
+    const openChat = useSelector((state) => state.openChat);
     const navigate = useNavigate();
-    const isTemporaryChatRef = useRef(false); // Use ref to store if the current chat is temporary
+    const isTemporaryChatRef = useRef(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                setLoading(true); // Show progress bar
+                setLoading(true);
                 const response = await fetch('http://localhost:5000/user/getAllUsers');
                 const data = await response.json();
                 setUsers(data);
@@ -29,7 +30,7 @@ function AllUsers() {
             } catch (error) {
                 console.error('Error fetching users:', error);
             } finally {
-                setLoading(false); // Hide progress bar
+                setLoading(false);
             }
         };
 
@@ -55,46 +56,40 @@ function AllUsers() {
     };
 
     const handleMessage = async (recipientId) => {
-        // If a temporary chat exists and no message has been sent, delete it
-        if (isTemporaryChatRef.current && openChat && !openChat.messages.length) {
-            console.log("removing temporary chat");
-            
-            await deleteTemporaryChat(openChat.chatId); // Use chatId if it's part of openChat
-            dispatch(clearOpenChat()); // Clear the current chat from Redux
-            localStorage.removeItem('temporaryChatId'); // Remove chat ID from localStorage
-        }
+        console.log("User Chats in All users Section",chats);
         
+        const existingChat = chats.find(chat => chat.participants.includes(recipientId));
+
+        if (existingChat) {
+            dispatch(setOpenChat({ chat: existingChat, temporary: false }));
+            navigate(`/chat/${existingChat._id}`, { replace: true });
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:5000/chat/createTemporaryChat/${user._id}`, {
+            const response = await fetch(`http://localhost:5000/chat/checkOrCreate/${user._id}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipient_id: recipientId }),
             });
 
-            const { chat, isTemporary } = await response.json();
-            console.log(chat, isTemporary);
-            
-            if (chat) {
-                isTemporaryChatRef.current = isTemporary; // Track if the chat is temporary
-                dispatch(setOpenChat({ chat: chat, temporary: isTemporary })); // Set the temporary chat in Redux
-                dispatch(setNewChat(chat)); // Optionally set new chat data
-                localStorage.setItem('temporaryChatId', chat._id); // Store chat ID in localStorage
-                navigate(`/chat/${chat._id}`, { replace: true });
-            }
+            const { chat } = await response.json();
+
+            dispatch(addChat(chat));
+            dispatch(setOpenChat({ chat, temporary: false }));
+            navigate(`/chat/${chat._id}`, { replace: true });
         } catch (error) {
             console.error('Error initiating chat:', error);
         }
     };
 
-    // Effect to check for existing temporary chat on refresh
     useEffect(() => {
         const temporaryChatId = localStorage.getItem('temporaryChatId');
         if (temporaryChatId) {
-            // Check if the chat exists in Redux and has no messages
             if (openChat && openChat.chatId === temporaryChatId && !openChat.messages.length) {
                 deleteTemporaryChat(temporaryChatId);
                 dispatch(clearOpenChat());
-                localStorage.removeItem('temporaryChatId'); // Remove chat ID from localStorage
+                localStorage.removeItem('temporaryChatId');
             }
         }
     }, [openChat, dispatch]);

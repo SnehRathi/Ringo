@@ -33,17 +33,9 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  },
   chats: [
     {
-      chatId: {
+      _id: { // Use _id instead of chatId
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat'
       },
@@ -57,28 +49,21 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-}, { timestamps: true });
+  otp: {
+    type: String, // Store the OTP
+    default: null
+  },
+  otpExpires: {
+    type: Date, // Store OTP expiration time
+    default: null
+  }
+}, { 
+  timestamps: true 
+});
+
+// Prevent automatic `_id` generation for the `chats` subdocuments
+UserSchema.path('chats').schema.options._id = false;
 
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
-
-// ,
-// settings: {
-//   theme: {
-//     type: String,
-//     enum: ['light', 'dark'],
-//     default: 'light'
-//   },
-//   notifications: {
-//     type: Boolean,
-//     default: true
-//   },
-//   privacy: {
-//     profileVisibility: {
-//       type: String,
-//       enum: ['public', 'contacts', 'private'],
-//       default: 'public'
-//     }
-//   }
-// }

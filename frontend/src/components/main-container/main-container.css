@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap');
+
 .main-container {
     background: rgba(25, 25, 25, 0.9);
     filter: saturate(180%);
@@ -5,4 +7,91 @@
     width: 85vw;
     border-radius: 5px;
     display: flex;
+    margin: auto; /* Center the container */
+    flex-direction: column; /* Default for smaller screens */
+}
+
+/* Welcome Page */
+.welcome-page {
+    flex: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid gray;
+
+    & .brand {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+
+        & img {
+            height: 50%;
+            max-width: 100%;
+            caret-color: transparent;
+        }
+
+        & span {
+            max-width: 50%;
+            font-size: 1.5rem;
+            white-space: normal;
+            overflow-wrap: break-word;
+            word-break: keep-all;
+            color: white;
+            font-family: 'Pacifico', cursive;
+        }
+    }
+}
+
+/* Media Queries */
+
+/* For tablets and small laptops */
+@media (min-width: 600px) {
+    .main-container {
+        flex-direction: row; /* Switch to row layout for larger devices */
+        height: 90vh;
+        width: 90vw;
+    }
+
+    .welcome-page {
+        flex: 0.7;
+    }
+}
+
+/* For desktops and larger screens */
+@media (min-width: 1024px) {
+    .main-container {
+        height: 95vh;
+        width: 85vw;
+    }
+}
+
+/* For small devices like phones */
+@media (max-width: 599px) {
+    .main-container {
+        height: auto; /* Allow container height to adjust based on content */
+        width: 95%;
+    }
+
+    .welcome-page {
+        border-left: none; /* Remove border for smaller devices */
+        padding: 15px;
+    }
+
+    .welcome-page .brand {
+        gap: 8px;
+    }
+
+    .welcome-page .brand img {
+        height: auto; /* Adjust image height */
+        max-height: 150px;
+    }
+
+    .welcome-page .brand span {
+        max-width: 90%;
+        text-align: center; /* Center align text on small devices */
+    }
 }

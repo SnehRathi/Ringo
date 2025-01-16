@@ -6,7 +6,7 @@ export const fetchUserChats = createAsyncThunk(
   async (token, { rejectWithValue }) => {
     try {
       const response = await fetch('http://localhost:5000/chat/getUserChats', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
         throw new Error('Failed to fetch chats');
@@ -23,72 +23,117 @@ const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
     chats: [],
+    chatIndex: {}, // Mapping of chatId to its index in the chats array
     status: 'idle',
     error: null,
   },
   reducers: {
+    setChats: (state, action) => {
+      state.chats = action.payload;
+      state.chatIndex = action.payload.reduce((map, chat, index) => {
+        map[chat._id] = index;
+        return map;
+      }, {});
+    },
     addChat: (state, action) => {
-      state.chats.push(action.payload);
+      const newChat = action.payload;
+      state.chats.push(newChat);
+      state.chatIndex[newChat._id] = state.chats.length - 1;
     },
-    // Directly update the chat without traversing all chats
-    addMessageToChat: (state, action) => {
-      console.log(action.payload);
-      const { _id, chat, sender, content, file, timestamp, seenBy, updatedAt } = action.payload; // Destructure the message details
-      const chatToUpdate = state.chats.find(existingChat => existingChat._id === chat); // Find the correct chat by chatId
+    addMessageToChatForSender: (state, action) => {
+      const { message, currentUserId } = action.payload;
+      const { chat, sender, content, file, timestamp, seenBy, updatedAt } = message;
 
-      if (chatToUpdate) {
-        const message = {
-          messageId: _id, // Unique message ID
-          sender: sender, // Sender ID
-          content: content, // Message content
-          file: file ? {
-            fileUrl: file.fileUrl,
-            fileType: file.fileType,
-            fileMimeType: file.fileMimeType
-          } : null, // File object if exists
-          timestamp: timestamp, // Timestamp of when the message was created
-          seenBy: seenBy || [], // Array of IDs who have seen the message
-          updatedAt: updatedAt || null // Last updated timestamp
+      const chatIndex = state.chatIndex[chat];
+      if (chatIndex !== undefined && currentUserId === sender) {
+        const chatToUpdate = state.chats[chatIndex];
+
+        const newMessage = {
+          sender,
+          content,
+          file: file
+            ? {
+              fileUrl: file.fileUrl,
+              fileType: file.fileType,
+              fileMimeType: file.fileMimeType,
+            }
+            : null,
+          timestamp,
+          seenBy: seenBy || [],
+          updatedAt: updatedAt || null,
+          status: 'sending', // Initial status for the sender
         };
 
-        // Add new message to this specific chat
-        chatToUpdate.messages.push(message);
-        console.log(message);
-        
-
-        // Update lastMessage field with this new message
+        chatToUpdate.messages.push(newMessage);
         chatToUpdate.lastMessage = {
-          sender: sender,
-          content: content,
-          file: file ? {
-            fileUrl: file.fileUrl,
-            fileType: file.fileType,
-            fileMimeType: file.fileMimeType
-          } : null,
-          timestamp: timestamp,
-          updatedAt: updatedAt || null
+          sender,
+          content,
+          file: newMessage.file,
+          timestamp,
+          updatedAt: updatedAt || null,
         };
       }
     },
 
+    addMessageToChatForReceiver: (state, action) => {
+      const { message, currentUserId } = action.payload;
+      const { chat, sender, content, file, timestamp, seenBy, updatedAt } = message;
+
+      const chatIndex = state.chatIndex[chat];
+      if (chatIndex !== undefined && currentUserId !== sender) {
+        const chatToUpdate = state.chats[chatIndex];
+
+        const newMessage = {
+          sender,
+          content,
+          file: file
+            ? {
+              fileUrl: file.fileUrl,
+              fileType: file.fileType,
+              fileMimeType: file.fileMimeType,
+            }
+            : null,
+          timestamp,
+          seenBy: seenBy || [],
+          updatedAt: updatedAt || null,
+          status: 'received', // Initial status for the receiver
+        };
+
+        chatToUpdate.messages.push(newMessage);
+        chatToUpdate.lastMessage = {
+          sender,
+          content,
+          file: newMessage.file,
+          timestamp,
+          updatedAt: updatedAt || null,
+        };
+
+        if (currentUserId !== sender) {
+          chatToUpdate.unreadCount = (chatToUpdate.unreadCount || 0) + 1;
+        }
+      }
+    },
     updateLastMessage: (state, action) => {
-      const { _id, chat, sender, content, file, timestamp, updatedAt } = action.payload; // Destructure the message details
-      const chatToUpdate = state.chats.find(existingChat => existingChat._id === chat); // Find the correct chat by chatId
-
-      if (chatToUpdate) {
-        // Update the lastMessage field with the new message information
+      const { chat, sender, content, file, timestamp, updatedAt } = action.payload;
+      const chatIndex = state.chatIndex[chat];
+      if (chatIndex !== undefined) {
+        const chatToUpdate = state.chats[chatIndex];
         chatToUpdate.lastMessage = {
-          sender: sender,
-          content: content,
+          sender,
+          content,
           file: file ? {
             fileUrl: file.fileUrl,
             fileType: file.fileType,
-            fileMimeType: file.fileMimeType
-          } : null, // File object if exists
-          timestamp: timestamp,
-          updatedAt: updatedAt || null
+            fileMimeType: file.fileMimeType,
+          } : null,
+          timestamp,
+          updatedAt: updatedAt || null,
         };
       }
+    },
+    clearChats: (state) => {
+      state.chats = [];
+      state.chatIndex = {};
     },
   },
   extraReducers: (builder) => {
@@ -98,7 +143,11 @@ const chatsSlice = createSlice({
       })
       .addCase(fetchUserChats.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.chats = action.payload; // Store the fetched chats
+        state.chats = action.payload;
+        state.chatIndex = action.payload.reduce((map, chat, index) => {
+          map[chat._id] = index;
+          return map;
+        }, {});
       })
       .addCase(fetchUserChats.rejected, (state, action) => {
         state.status = 'failed';
@@ -107,5 +156,11 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { addChat, addMessageToChat, updateLastMessage } = chatsSlice.actions;
+// Create a memoized selector to get messages by chatId
+export const selectMessagesByChatId = (state, chatId) => {
+  const chatIndex = state.chats.chatIndex[chatId];
+  return chatIndex !== undefined ? state.chats.chats[chatIndex]?.messages || [] : [];
+};
+
+export const { setChats, addChat, addMessageToChatForSender, addMessageToChatForReceiver, updateLastMessage, clearChats } = chatsSlice.actions;
 export default chatsSlice.reducer;

@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const messageRoutes = require('./routes/msgRoutes');
+const resetPasswordRoutes = require('./routes/resetPasswordRoutes')
 const { sendMessage } = require('./controllers/messageController');
 
 // Configuring the Env file 
@@ -35,6 +36,7 @@ app.use('/api', authRoutes);
 app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
 app.use('/messages', messageRoutes);
+app.use('/reset-password',resetPasswordRoutes);
 
 // Connect to MongoDB
 connectToMongoDB().then(() => {
@@ -45,18 +47,24 @@ connectToMongoDB().then(() => {
 
 // Socket.IO connection logic
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  // console.log('A user connected(in server.js):', socket.id);
 
-  socket.on('joinRoom', (userId) => {
-    socket.join(userId);
-    console.log(`User with ID: ${userId} joined room: ${userId}`);
+  // Backend code (example)
+  socket.on('joinRoom', (roomId) => {
+    socket.join(roomId);
+    // console.log(`Socket joined room: ${roomId}`);
   });
 
-  // Handle sendMessage event from client (for both text and file messages)
-  socket.on('sendMessage', async (message) => {
+  socket.on('checkRooms', () => {
+    const rooms = Array.from(socket.rooms);
+    // console.log(`Rooms for socket ${socket.id}:`, rooms);
+    socket.emit('roomsList', rooms);
+  });
+
+  socket.on('sendMessage', async (messageData) => {
     try {
-      const savedMessage = await sendMessage({ ...message, io });
-      console.log('Message saved and emitted:', savedMessage);
+      const message = await sendMessage({ ...messageData, io });
+      console.log('Message saved and emitted(in server.js):', message);
     } catch (error) {
       console.error('Error sending message:', error);
       socket.emit('error', { message: error.message });

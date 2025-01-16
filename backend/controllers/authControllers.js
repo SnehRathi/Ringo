@@ -5,37 +5,38 @@ const admin = require('../config/firebaseAdmin')
 
 // Login controller
 const loginUser = async (req, res) => {
-    const { password, username } = req.body;
-
+    const { password, credential } = req.body;
     try {
-        // Check if the user exists in MongoDB
-        let user = await User.findOne({ username });
+        // Find user by either username or email
+        let user = await User.findOne({
+            $or: [{ username: credential }, { email: credential }]
+        });
 
         if (!user) {
             return res.status(400).json({ message: 'User does not exist' });
         }
 
-        // Compare the provided password with the hashed password in the database
+        // Compare provided password with stored hash
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid username or password' });
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Generate a JWT token for MongoDB authentication
+        // Generate JWT token for MongoDB authentication
         const token = jwt.sign(
             { _id: user._id, username: user.username },
             process.env.JWT_SECRET,
             { expiresIn: '30d' }
         );
 
-        // Generate a Firebase custom token
+        // Generate Firebase custom token
         const firebaseToken = await admin.auth().createCustomToken(user._id.toString());
 
-        // Prepare user data excluding the password hash
+        // Prepare user data excluding password hash
         let userData = user.toObject();
         delete userData.passwordHash;
 
-        // Send both MongoDB JWT and Firebase custom token to the client
+        // Send tokens to client
         res.status(200).json({
             user: userData,
             token: token,
@@ -46,6 +47,8 @@ const loginUser = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
 
 // Registration Controller (MongoDB)
 const registerUser = async (req, res) => {
@@ -118,7 +121,7 @@ const verifyToken = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
+        // console.log("User in verifyToken controller ",user)
         res.status(200).json({ user });
     } catch (error) {
         return res.status(401).json({ message: 'Invalid or expired token' });

@@ -4,33 +4,31 @@ import { useNavigate, Link } from "react-router-dom";
 import './login.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { setUser } from '../../redux/userSlice'; // Adjust the path as necessary
+import { setUser } from '../../redux/userSlice';
 import Alert from '@mui/material/Alert';
 import { signInWithCustomToken } from "firebase/auth";
-import { auth } from '../../firebaseConfig'; // Adjust the path as necessary
+import { auth } from '../../firebaseConfig';
+import { fetchUserChats } from '../../redux/chatsSlice';
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
-    const [username, setUsername] = useState('');
+    const [credential, setCredential] = useState(''); // Single field for email/username
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(''); // To handle error messages
-    const [loading, setLoading] = useState(false); // To handle loader visibility
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // console.log(auth);
-    // console.log(signInWithCustomToken);
-    
-    
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     async function handleLogin(e) {
         e.preventDefault();
         setLoading(true);
         setError('');
+        const trimmedPassword = password.trim();
 
-        if (!password.trim()) {
+        if (!credential.trim() || !trimmedPassword) {
             setLoading(false);
-            setError('Password cannot be empty');
+            setError('All fields are required');
             return;
         }
 
@@ -38,7 +36,7 @@ function Login() {
             const response = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ credential, password: trimmedPassword }),
             });
 
             if (!response.ok) {
@@ -49,19 +47,15 @@ function Login() {
             const data = await response.json();
             const { user, token, firebaseToken } = data;
 
-            // Save MongoDB JWT token
             localStorage.setItem('ringoToken', token);
-            // Dispatch the user data to Redux
             dispatch(setUser({ ...user, token }));
-            console.log(user);
-            
-            // Authenticate using the custom token
             await signInWithCustomToken(auth, firebaseToken);
+            dispatch(fetchUserChats(token));
 
             navigate('/', { replace: true });
         } catch (err) {
             setError(err.message || 'An error occurred');
-            console.error('Login error:', err); // Debug log
+            console.error('Login error:', err);
         } finally {
             setLoading(false);
         }
@@ -70,9 +64,9 @@ function Login() {
     return (
         <div className="login-page">
             <div className="left-side">
-                <div className='brand'>
-                    <img src='/logo.png' alt='Ringo Logo' />
-                    <span className='welcome-text'>
+                <div className="brand">
+                    <img src="/logo.png" alt="Ringo Logo" />
+                    <span className="welcome-text">
                         Welcome to Ringo—Where Conversations Come to Life!
                     </span>
                 </div>
@@ -80,12 +74,13 @@ function Login() {
             <div className="right-side">
                 <form className="login-form" onSubmit={handleLogin}>
                     <h2>Login to your account</h2>
+
                     <input
                         type="text"
-                        placeholder="Username"
+                        placeholder="Email or Username"
                         className="input-field"
-                        onChange={(event) => setUsername(event.target.value)}
-                        value={username}
+                        onChange={(event) => setCredential(event.target.value)}
+                        value={credential}
                     />
                     <div className="password-field-container">
                         <input
@@ -99,13 +94,10 @@ function Login() {
                             className="toggle-password"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? (
-                                <VisibilityIcon />
-                            ) : (
-                                <VisibilityOffIcon />
-                            )}
+                            {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                         </span>
                     </div>
+
                     {loading ? (
                         <div className="loading-container">
                             <div className="loading-spinner"></div>
@@ -116,9 +108,10 @@ function Login() {
                         </button>
                     )}
                     {error && <Alert severity="error">{error}</Alert>}
-                    <div className="forgot-password">
-                        <span>Forgot Password?</span>
-                    </div>
+
+                    <Link to="/reset-password" className="forgot-password">
+                        <span>Reset Password</span>
+                    </Link>
                     <div className="register-link">
                         <span>Don't have an account? </span>
                         <Link to="/register">Register here</Link>

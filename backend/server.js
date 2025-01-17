@@ -12,7 +12,7 @@ const resetPasswordRoutes = require('./routes/resetPasswordRoutes')
 const { sendMessage } = require('./controllers/messageController');
 
 // Configuring the Env file 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: './.env' });
 const app = express();
 const PORT = process.env.PORT || 5000;
 

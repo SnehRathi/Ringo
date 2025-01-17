@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 // Connection URI
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: './.env' });
 
 const uri = process.env.MONGO_URI;
 async function connectToMongoDB() {

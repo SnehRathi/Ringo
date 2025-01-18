@@ -3,9 +3,13 @@ const User = require('../models/user'); // Import the User model
 
 // Controller to fetch all users
 const getAllUsers = async (req, res) => {
-    
+    const userId = req.params.userId;
+
     try {
-        const users = await User.find({}, 'username profilePicture'); // Fetch all users, only select username and profilePicture fields
+        const users = await User.find(
+            { _id: { $ne: userId } }, // Exclude the current user
+            'username profilePicture'
+        ); // Fetch all users except the current user, only selecting required fields
         res.status(200).json(users);
     } catch (error) {
         console.error('Error fetching users:', error);

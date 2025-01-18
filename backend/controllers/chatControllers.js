@@ -5,7 +5,7 @@ const Message = require('../models/msg'); // Import the Msg model
 // Create a chat or return the existing one
 const checkOrCreateChat = async (req, res) => {
     const recipientId = req.body.recipient_id;
-    const senderId = req.params.send_id;
+    const senderId = req.params.sender_id;
 
     try {
         let chat = await Chat.findOne({

@@ -37,6 +37,7 @@ app.use('/user', userRoutes);
 app.use('/chat', chatRoutes);
 app.use('/messages', messageRoutes);
 app.use('/reset-password',resetPasswordRoutes);
+  
 
 // Connect to MongoDB
 connectToMongoDB().then(() => {

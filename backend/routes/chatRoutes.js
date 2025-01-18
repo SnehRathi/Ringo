@@ -6,7 +6,7 @@ const {authMiddleware} = require('../middleware/authMiddleware'); // Assuming yo
 // Route to fetch all chats for a user
 
 // Define the route with send_id as a URL parameter and recipient_id in the body
-router.post("/checkOrCreate/:send_id", checkOrCreateChat);
+router.post("/checkOrCreate/:sender_id", checkOrCreateChat);
 router.delete('/chat/discard/:chatId/:senderId', discardTemporaryChat);
 router.get('/getUserChats', authMiddleware, getUserChats);
 

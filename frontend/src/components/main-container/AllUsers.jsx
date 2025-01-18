@@ -17,14 +17,17 @@ function AllUsers() {
     const chats = useSelector((state) => state.chats.chats);
     const openChat = useSelector((state) => state.openChat);
     const navigate = useNavigate();
-    const isTemporaryChatRef = useRef(false);
+    // const isTemporaryChatRef = useRef(false);
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:5000/user/getAllUsers');
+                const response = await fetch(`http://localhost:5000/user/getAllUsers/${user._id}`, {
+                    headers: { 'Content-Type': 'application/json' },
+                });
                 const data = await response.json();
+                console.log(data);
                 setUsers(data);
                 setFilteredUsers(data);
             } catch (error) {
@@ -33,9 +36,10 @@ function AllUsers() {
                 setLoading(false);
             }
         };
-
+    
         fetchUsers();
-    }, []);
+    }, [user._id]);
+    
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
@@ -58,8 +62,11 @@ function AllUsers() {
     const handleMessage = async (recipientId) => {
         console.log("User Chats in All users Section",chats);
         
-        const existingChat = chats.find(chat => chat.participants.includes(recipientId));
-
+        const existingChat = chats.find(chat => 
+            chat.participants.some(participant => participant._id === recipientId)
+        );
+        
+        console.log("existing chat in All Users section",existingChat);
         if (existingChat) {
             dispatch(setOpenChat({ chat: existingChat, temporary: false }));
             navigate(`/chat/${existingChat._id}`, { replace: true });

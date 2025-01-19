@@ -46,7 +46,7 @@ function ResetPassword() {
         setMessage('');
 
         try {
-            const response = await fetch('http://localhost:5000/reset-password/generate-otp', {
+            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/generate-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -73,7 +73,7 @@ function ResetPassword() {
         setMessage('');
 
         try {
-            const response = await fetch('http://localhost:5000/reset-password/verify-otp', {
+            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp: otp.join('') }),
@@ -222,7 +222,7 @@ function NewPassword() {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/reset-password/new-password', {
+            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/new-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, newPassword: password }),

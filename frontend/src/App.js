@@ -17,16 +17,16 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
   const isLoading = useSelector((state) => state.loading.isLoading);
   const [tokenChecked, setTokenChecked] = useState(false);
+  const BACKEND_URL="https://ringo-backend-na38.onrender.com"
 
   // Validate token and fetch user data
   useEffect(() => {
     const validateToken = async () => {
       dispatch(setLoading(true));
-
       const token = localStorage.getItem('ringoToken');
       if (token) {
         try {
-          const response = await fetch('http://localhost:5000/api/verify', {
+          const response = await fetch(`${BACKEND_URL}/api/verify`, {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
           });

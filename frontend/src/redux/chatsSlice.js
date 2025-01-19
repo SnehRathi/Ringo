@@ -5,7 +5,7 @@ export const fetchUserChats = createAsyncThunk(
   'chats/fetchUserChats',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:5000/chat/getUserChats', {
+      const response = await fetch('https://ringo-backend-na38.onrender.com/chat/getUserChats', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {

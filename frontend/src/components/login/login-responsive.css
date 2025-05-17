@@ -75,7 +75,7 @@
         width: 100%;
         height: auto;
         border-left: none;
-        padding: 30px 20px;
+        padding: 20px 20px;
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
         background: none;
@@ -89,10 +89,10 @@
     .login-page .bottom .reset-password-form,
     .reset-password .bottom .reset-password-form {
         background: rgba(25, 25, 25, 0.75);
-        max-width: 80%;
+        max-width: 90%;
         max-height: 85%;
-        gap: 15px;
-        padding: 10px;
+        gap: 1.5rem;
+        padding: 5px 10px;
         border-radius: 10px;
         flex: 1;
         display: flex;

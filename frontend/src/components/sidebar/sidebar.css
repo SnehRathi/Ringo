@@ -1,73 +1,70 @@
-/* Sidebar CSS */
 .sidebar {
-    flex: .3;
+    flex: 0.3;
     padding: 10px 0;
     padding-bottom: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    caret-color: transparent; 
+    caret-color: transparent;
 }
 
-/* UserInfo.css */
 .user-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 10px;
     position: relative;
-
-    a {
-        text-decoration: none;
-    }
-
-    .user {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-
-        img {
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-
-            &:hover {
-                cursor: pointer;
-            }
-        }
-
-        .username {
-            font-size: 20px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            font-weight: bold;
-            color: white;
-        }
-    }
-
-    .icons {
-        display: flex;
-        gap: 12px;
-
-        .icon {
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-
-            &:hover {
-                color: #949494; 
-            }
-        }
-    }
 }
 
-/* Dropdown Styling */
+.user-info a {
+    text-decoration: none;
+}
+
+.user-info .user {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info .user img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info .user img:hover {
+    cursor: pointer;
+}
+
+.user-info .user .username {
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.user-info .icons {
+    display: flex;
+    gap: 12px;
+}
+
+.user-info .icons .icon {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.user-info .icons .icon:hover {
+    color: #949494;
+}
+
 .dropdown-menu {
     position: absolute;
-    top: 45px; /* Positioned just below the icons */
-    right: 5px; /* Align to the right of the container */
+    top: 45px;
+    right: 5px;
     z-index: 1000;
     background-color: #0062f5;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -79,11 +76,13 @@
     width: 200px;
     color: white;
 }
-.modal-box{
+
+.modal-box {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
+
 .modal-box h3 {
     font-size: 18px;
     margin-bottom: 5px;
@@ -97,17 +96,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    &:first-child {
-        margin-bottom: 10px;
-    }
+}
+
+.dropdown-button:first-child {
+    margin-bottom: 10px;
 }
 
 .modal-box button:hover {
     background-color: #f0f0f0;
 }
 
-/* Chatlist CSS */
-/* Chat list and conversation styles (same as before) */
 .chat-list {
     flex: 1;
     display: flex;
@@ -120,7 +118,7 @@
     display: none;
 }
 
-.chat-list>.search-bar {
+.chat-list > .search-bar {
     margin: 0 10px;
     border-radius: 5px;
     padding: 5px;
@@ -134,12 +132,12 @@
     border: 0.1px solid white;
 }
 
-.chat-list>.search-bar:focus-within {
-    background-color: rgba(0, 0, 0, 0.767); 
+.chat-list > .search-bar:focus-within {
+    background-color: rgba(0, 0, 0, 0.767);
     transition: 0.2s;
 }
 
-.chat-list>.search-bar input {
+.chat-list > .search-bar input {
     border: none;
     outline: none;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -151,17 +149,17 @@
     caret-color: white;
 }
 
-.chat-list>.search-bar input::placeholder {
+.chat-list > .search-bar input::placeholder {
     color: rgb(222, 222, 222);
     font-size: 16px;
 }
 
-.chat-list>.search-bar>label {
+.chat-list > .search-bar > label {
     height: 20px;
     width: 20px;
 }
 
-.chat-list>.search-bar>label>img {
+.chat-list > .search-bar > label > img {
     height: 20px;
     width: 20px;
     object-fit: cover;
@@ -175,8 +173,6 @@
     overflow-y: auto;
     gap: 2px;
 }
-
-/* Highlight the open chat */
 
 .conversations .conversation-link {
     text-decoration: none;
@@ -199,7 +195,6 @@
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-/* Skeleton Conversation Styles */
 .skeleton-conversation {
     display: flex;
     align-items: center;

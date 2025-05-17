@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import './login.css';
+import './login-responsive.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { setUser } from '../../redux/userSlice';
@@ -63,15 +64,18 @@ function Login() {
 
     return (
         <div className="login-page">
-            <div className="left-side">
+            <div className="left-side top">
                 <div className="brand">
-                    <img src="/logo.png" alt="Ringo Logo" />
+                    <div className="logo-container">
+                        <img src="/logo.png" alt="Ringo Logo" />
+                    </div>
                     <span className="welcome-text">
                         Welcome to Ringo—Where Conversations Come to Life!
                     </span>
                 </div>
             </div>
-            <div className="right-side">
+
+            <div className="right-side bottom">
                 <form className="login-form" onSubmit={handleLogin}>
                     <h2>Login to your account</h2>
 

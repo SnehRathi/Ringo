@@ -22,7 +22,6 @@ const App = () => {
   useEffect(() => {
     const validateToken = async () => {
       dispatch(setLoading(true));
-
       const token = localStorage.getItem('ringoToken');
       if (token) {
         try {

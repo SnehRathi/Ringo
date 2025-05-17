@@ -1,0 +1,146 @@
+/* Medium screens (tablets, 768px and up) */
+@media (max-width: 1024px) {}
+
+/* Small screens (phones, 480px - 768px) */
+@media (max-width: 768px) {
+
+    .login-page .left-side .brand span,
+    .reset-password .left-side .brand span {
+        max-width: 80%;
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small screens (very small phones) */
+@media (max-width: 480px) {
+
+    .login-page,
+    .reset-password {
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0px;
+        flex-direction: column;
+        gap: 2rem;
+        background: none;
+    }
+
+    /* Top */
+    .login-page .top,
+    .reset-password .top {
+        flex: none;
+        width: 100%;
+        height: auto;
+        padding: 10px 0;
+        border-bottom: 1px solid gray;
+        background: rgba(25, 25, 25, 0.75);
+    }
+
+    .login-page .top .brand,
+    .reset-password .top .brand {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+        padding: 0 2px;
+    }
+
+    .login-page .top .logo-container,
+    .reset-password .top .logo-container {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .login-page .top .logo-container img,
+    .reset-password .top .logo-container img {
+        object-fit: contain;
+        object-position: center;
+    }
+
+    .login-page .top .brand span,
+    .reset-password .top .brand span {
+        max-width: 100%;
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    /* Bottom */
+    .login-page .bottom,
+    .reset-password .bottom {
+        flex: 1;
+        width: 100%;
+        height: auto;
+        border-left: none;
+        padding: 30px 20px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        background: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Form layout tweaks */
+    .login-page .bottom .login-form,
+    .reset-password .bottom .login-form,
+    .login-page .bottom .reset-password-form,
+    .reset-password .bottom .reset-password-form {
+        background: rgba(25, 25, 25, 0.75);
+        max-width: 80%;
+        max-height: 85%;
+        gap: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Heading smaller */
+    .login-page .bottom .login-form h2,
+    .reset-password .bottom .login-form h2,
+    .login-page .bottom .reset-password-form h2,
+    .reset-password .bottom .reset-password-form h2 {
+        font-size: 1.25rem;
+    }
+
+    .input-field {
+        font-size: 0.95rem;
+        padding: 9px;
+    }
+
+    .password-field-container .toggle-password img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .login-button {
+        font-size: 0.95rem;
+        padding: 9px;
+    }
+
+    .forgot-password {
+        font-size: 0.8rem;
+        text-decoration: underline;
+    }
+
+    .loading-container {
+        justify-content: right;
+    }
+
+    .loading-spinner {
+        width: 28px;
+        height: 28px;
+        border-width: 3px;
+    }
+    .register-link{
+        font-family: 'Roboto', sans-serif;
+        color: white;
+    }
+    .register-link>a{
+        color: #1B77FF;
+    }
+}

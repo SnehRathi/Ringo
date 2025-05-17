@@ -1,175 +1,225 @@
-.login-page,.reset-password {
+.login-page,
+.reset-password {
     background: rgba(25, 25, 25, 0.9);
     filter: saturate(180%);
     height: 90vh;
     width: 75vw;
     border-radius: 5px;
     display: flex;
-
-    /* Left side showing the Branding */
-    .left-side {
-        flex: 0.4;
-        .brand {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 10px;
-
-            img {
-                height: 50%;
-                caret-color: transparent;
-            }
-
-            span {
-                max-width: 60%;
-                font-size: 1.1rem;
-                white-space: normal;
-                overflow-wrap: break-word;
-                word-break: keep-all;
-                color: white;
-                font-family: 'Pacifico', cursive;
-            }
-        }
-    }
-
-    /* Right Side of the Login Page */
-    .right-side {
-        flex: 0.6;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-left: 1px solid gray;
-        padding: 20px;
-
-        .login-form,.reset-password-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-            max-width: 300px;
-
-            h2 {
-                font-family: 'Roboto', sans-serif;
-                font-size: 1.5rem;
-                color: white;
-                text-align: center;
-            }
-
-            .input-field {
-                padding: 10px;
-                border-radius: 5px;
-                border: 1px solid transparent;
-                outline: none;
-                background: rgba(215, 215, 215, 0.74);
-                font-family: 'Roboto', sans-serif;
-                font-size: 1rem;
-            }
-            .input-field:focus{
-                border: 1px solid black;
-                background: rgba(255, 255, 255, 0.9);
-            }
-
-            .input-field::placeholder{
-                color: rgba(0, 0, 0, 0.619);
-            }
-
-            .password-field-container {
-                position: relative;
-
-                .input-field {
-                    width: 100%;
-                }
-
-                .toggle-password {
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .toggle-password img {
-                    width: 20px;
-                    height: 20px;
-                }
-            }
-
-
-
-            .login-button {
-                padding: 10px;
-                border-radius: 5px;
-                border: none;
-                background: #1B77FF;
-                color: white;
-                font-family: 'Roboto', sans-serif;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: background-color 0.1s ease;
-
-                &:hover {
-                    background-color: #073b94;
-                }
-            }
-
-            .loading-container {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-                align-items: center;
-                width: 100%;
-                margin-top: 10px;
-
-                .loading-spinner {
-                    border: 4px solid rgba(0, 0, 0, 0.1);
-                    border-left-color: #3498db;
-                    border-radius: 50%;
-                    width: 36px;
-                    height: 36px;
-                    animation: spin 1s linear infinite;
-                }
-            }
-
-
-            .forgot-password {
-                font-size: 0.8rem;
-                color: #ccc;
-                cursor: pointer;
-                font-family: 'Roboto', sans-serif;
-                display: flex;
-                justify-content: flex-end;
-                text-decoration: none;
-
-                & span {
-                    position: relative;
-
-                    &::after {
-                        content: '';
-                        position: absolute;
-                        right: 0;
-                        bottom: -2px;
-                        width: 0;
-                        height: 1px;
-                        background-color: #ccc;
-                    }
-
-                    &:hover::after {
-                        width: 100%;
-                    }
-                }
-            }
-        }
-    }
 }
 
+/* Left Side */
+.login-page .left-side,
+.reset-password .left-side {
+    flex: 0.4;
+}
+
+.login-page .left-side .brand,
+.reset-password .left-side .brand {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-page .left-side .logo-container,
+.reset-password .left-side .logo-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page .left-side .logo-container img,
+.reset-password .left-side .logo-container img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    caret-color: transparent;
+}
+
+.login-page .left-side .brand span,
+.reset-password .left-side .brand span {
+    max-width: 60%;
+    font-size: 1rem;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    color: white;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+}
+
+
+/* Right Side */
+.login-page .right-side,
+.reset-password .right-side {
+    flex: 0.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-left: 1px solid gray;
+    padding: 20px;
+}
+
+/* Login Form & Reset Password Form */
+.login-page .right-side .login-form,
+.reset-password .right-side .login-form,
+.login-page .right-side .reset-password-form,
+.reset-password .right-side .reset-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.login-page .right-side .login-form h2,
+.reset-password .right-side .login-form h2,
+.login-page .right-side .reset-password-form h2,
+.reset-password .right-side .reset-password-form h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+
+.input-field {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    outline: none;
+    background: rgba(215, 215, 215, 0.74);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+.input-field:focus {
+    border: 1px solid black;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.input-field::placeholder {
+    color: rgba(0, 0, 0, 0.619);
+}
+
+/* Password Field Container */
+.password-field-container {
+    position: relative;
+}
+
+.password-field-container .input-field {
+    width: 100%;
+}
+
+.password-field-container .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.password-field-container .toggle-password img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Login Button */
+.login-button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #1B77FF;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.login-button:hover {
+    background-color: #073b94;
+}
+
+/* Loading Container */
+.loading-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3498db;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 1s linear infinite;
+}
+
+.register-link {
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+.register-link>a{
+    color: black;
+}
+.register-link>a:hover{
+    color: white;
+}
+
+/* Forgot Password */
+.forgot-password {
+    font-size: 0.8rem;
+    color: #ccc;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+}
+
+.forgot-password span {
+    position: relative;
+}
+
+.forgot-password span::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.forgot-password span:hover::after {
+    width: 100%;
+}
+
+/* Reset Password Specific */
+.go-back-to-otp {
+    text-decoration: underline;
+    color: black;
+}
+
+.go-back-to-otp:hover {
+    color: white;
+}
+
+/* Spinner Keyframes */
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -178,13 +228,4 @@
     100% {
         transform: rotate(360deg);
     }
-}
-
-/* Styles for the reset password page */
-.go-back-to-otp{
-    text-decoration: underline;
-    color: black;
-}
-.go-back-to-otp:hover{
-    color: white;
 }

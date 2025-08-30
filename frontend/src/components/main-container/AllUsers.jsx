@@ -23,7 +23,7 @@ function AllUsers() {
         const fetchUsers = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`https://ringo-backend-na38.onrender.com/user/getAllUsers/${user._id}`, {
+                const response = await fetch(`http://localhost:5000/user/getAllUsers/${user._id}`, {
                     headers: { 'Content-Type': 'application/json' },
                 });
                 const data = await response.json();
@@ -50,7 +50,7 @@ function AllUsers() {
 
     const deleteTemporaryChat = async (chatId) => {
         try {
-            await fetch(`https://ringo-backend-na38.onrender.com/chat/discard/${chatId}/${user._id}`, {
+            await fetch(`http://localhost:5000/chat/discard/${chatId}/${user._id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -74,7 +74,7 @@ function AllUsers() {
         }
 
         try {
-            const response = await fetch(`https://ringo-backend-na38.onrender.com/chat/checkOrCreate/${user._id}`, {
+            const response = await fetch(`http://localhost:5000/chat/checkOrCreate/${user._id}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipient_id: recipientId }),

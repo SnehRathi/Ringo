@@ -45,7 +45,7 @@ const sendMessage = async ({ senderId, chatId, content, file, isTemporary, io })
 
         const receiver = chat.participants.find((p) => p._id.toString() !== senderId);
         if (!receiver) throw new Error('Receiver not found');
-
+        // console.log(receiver);
         let fileData = null;
         if (file) {
             fileData = new File({

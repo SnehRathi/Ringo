@@ -6,6 +6,8 @@ const admin = require('../config/firebaseAdmin')
 // Login controller
 const loginUser = async (req, res) => {
     const { password, credential } = req.body;
+    console.log(credential);
+    
     try {
         // Find user by either username or email
         let user = await User.findOne({
@@ -36,6 +38,7 @@ const loginUser = async (req, res) => {
         let userData = user.toObject();
         delete userData.passwordHash;
 
+        // console.log(userData);
         // Send tokens to client
         res.status(200).json({
             user: userData,

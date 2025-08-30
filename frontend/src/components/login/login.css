@@ -1,5 +1,5 @@
 .login-page,
-.reset-password {
+.reset-password-page {
     background: rgba(25, 25, 25, 0.9);
     filter: saturate(180%);
     height: 90vh;
@@ -10,12 +10,12 @@
 
 /* Left Side */
 .login-page .left-side,
-.reset-password .left-side {
+.reset-password-page .left-side {
     flex: 0.4;
 }
 
 .login-page .left-side .brand,
-.reset-password .left-side .brand {
+.reset-password-page .left-side .brand {
     height: 100%;
     width: 100%;
     display: flex;
@@ -26,7 +26,7 @@
 }
 
 .login-page .left-side .logo-container,
-.reset-password .left-side .logo-container {
+.reset-password-page .left-side .logo-container {
     width: 50%;
     display: flex;
     justify-content: center;
@@ -34,7 +34,7 @@
 }
 
 .login-page .left-side .logo-container img,
-.reset-password .left-side .logo-container img {
+.reset-password-page .left-side .logo-container img {
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -42,7 +42,7 @@
 }
 
 .login-page .left-side .brand span,
-.reset-password .left-side .brand span {
+.reset-password-page .left-side .brand span {
     max-width: 60%;
     font-size: 1rem;
     white-space: normal;
@@ -56,7 +56,7 @@
 
 /* Right Side */
 .login-page .right-side,
-.reset-password .right-side {
+.reset-password-page .right-side {
     flex: 0.6;
     display: flex;
     justify-content: center;
@@ -70,9 +70,9 @@
 
 /* Login Form & Reset Password Form */
 .login-page .right-side .login-form,
-.reset-password .right-side .login-form,
+.reset-password-page .right-side .login-form,
 .login-page .right-side .reset-password-form,
-.reset-password .right-side .reset-password-form {
+.reset-password-page .right-side .reset-password-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -81,9 +81,9 @@
 }
 
 .login-page .right-side .login-form h2,
-.reset-password .right-side .login-form h2,
+.reset-password-page .right-side .login-form h2,
 .login-page .right-side .reset-password-form h2,
-.reset-password .right-side .reset-password-form h2 {
+.reset-password-page .right-side .reset-password-form h2 {
     font-family: 'Roboto', sans-serif;
     font-size: 1.5rem;
     color: white;
@@ -173,15 +173,17 @@
     font-family: 'Roboto', sans-serif;
     color: white;
 }
-.register-link>a{
+
+.register-link>a {
     color: black;
 }
-.register-link>a:hover{
+
+.register-link>a:hover {
     color: white;
 }
 
-/* Forgot Password */
-.forgot-password {
+/* Reset Password Link on Login Page*/
+.reset-password-link {
     font-size: 0.8rem;
     color: #ccc;
     cursor: pointer;
@@ -191,11 +193,11 @@
     text-decoration: none;
 }
 
-.forgot-password span {
+.reset-password-link span {
     position: relative;
 }
 
-.forgot-password span::after {
+.reset-password-link span::after {
     content: '';
     position: absolute;
     right: 0;
@@ -205,17 +207,68 @@
     background-color: #ccc;
 }
 
-.forgot-password span:hover::after {
+.reset-password-link span:hover::after {
     width: 100%;
 }
 
-/* Reset Password Specific */
-.go-back-to-otp {
-    text-decoration: underline;
-    color: black;
+/* Reset Password Page - Verify OTP*/
+.reset-password-page .verify-otp-form {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.go-back-to-otp:hover {
+.reset-password-page .verify-otp-form .MuiInputBase-input{
+    color: white;
+}
+
+.reset-password-page .verify-otp-form .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border-color: white;
+}
+
+.reset-password-page .verify-otp-form .MuiAlert-root {
+    font-size: 0.9rem;
+    border-radius: 4px;
+}
+
+.reset-password-page .verify-otp-form button.MuiButton-root {
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 10px 0;
+}
+
+.reset-password-page .verify-otp-form .resend-otp-container {
+    text-align: right;
+    color: white;
+    font-size: 1rem;
+}
+.reset-password-page .verify-otp-form .resend-otp-button{
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    font-size: 1rem;
+    text-decoration: underline;
+}
+.reset-password-page .verify-otp-form .resend-otp-button:hover{
+    color: white;
+    cursor: pointer;
+}
+.reset-password-page .verify-otp-form .go-back-to-otp {
+    text-align: left;
+    width: 100%;
+    color: black;
+    display: inline-block;
+    margin-top: 6px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.reset-password-page .verify-otp-form .go-back-to-otp:hover {
     color: white;
 }
 

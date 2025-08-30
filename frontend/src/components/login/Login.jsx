@@ -34,7 +34,7 @@ function Login() {
         }
 
         try {
-            const response = await fetch('https://ringo-backend-na38.onrender.com/api/login', {
+            const response = await fetch('http://localhost:5000/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ credential, password: trimmedPassword }),
@@ -47,6 +47,7 @@ function Login() {
 
             const data = await response.json();
             const { user, token, firebaseToken } = data;
+            // console.log(user);
 
             localStorage.setItem('ringoToken', token);
             dispatch(setUser({ ...user, token }));
@@ -113,7 +114,7 @@ function Login() {
                     )}
                     {error && <Alert severity="error">{error}</Alert>}
 
-                    <Link to="/reset-password" className="forgot-password">
+                    <Link to="/reset-password" className="reset-password-link">
                         <span>Reset Password</span>
                     </Link>
                     <div className="register-link">

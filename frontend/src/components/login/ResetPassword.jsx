@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate,useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import './login.css';
+import './login-responsive.css'
 import Alert from '@mui/material/Alert';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 function ResetPassword() {
-    const [step, setStep] = useState('generate-otp'); // 'generate-otp' or 'verify-otp'
+    const [step, setStep] = useState('verify-otp'); // 'generate-otp' or 'verify-otp'
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState(Array(6).fill(''));
     const [loading, setLoading] = useState(false);
@@ -46,7 +47,7 @@ function ResetPassword() {
         setMessage('');
 
         try {
-            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/generate-otp', {
+            const response = await fetch('http://localhost:5000/reset-password/generate-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -73,7 +74,7 @@ function ResetPassword() {
         setMessage('');
 
         try {
-            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/verify-otp', {
+            const response = await fetch('http://localhost:5000/reset-password/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp: otp.join('') }),
@@ -94,10 +95,12 @@ function ResetPassword() {
     }
 
     return (
-        <div className="reset-password">
-            <div className="left-side">
+        <div className="reset-password-page">
+            <div className="left-side top">
                 <div className="brand">
-                    <img src="/logo.png" alt="Ringo Logo" />
+                    <div className="logo-container">
+                        <img src="/logo.png" alt="Ringo Logo" />
+                    </div>
                     <span className="welcome-text">
                         {step === 'generate-otp'
                             ? 'Reset Your Password to Rejoin Ringo Conversations!'
@@ -105,7 +108,7 @@ function ResetPassword() {
                     </span>
                 </div>
             </div>
-            <div className="right-side">
+            <div className="right-side bottom">
                 {step === 'generate-otp' ? (
                     <form className="reset-password-form" onSubmit={handleGenerateOtp}>
                         <h2>Reset Password</h2>
@@ -146,6 +149,7 @@ function ResetPassword() {
                                     value={digit}
                                     onChange={(e) => handleChangeOtp(index, e.target.value)}
                                     onKeyDown={(e) => handleKeyDown(index, e)}
+                                    autoComplete="one-time-code"
                                     inputProps={{
                                         maxLength: 1,
                                         style: {
@@ -177,11 +181,9 @@ function ResetPassword() {
                         {message && <Alert severity="success" style={{ marginTop: '10px' }}>{message}</Alert>}
                         {error && <Alert severity="error" style={{ marginTop: '10px' }}>{error}</Alert>}
                         <Box mt={2}>
-                            <Typography variant="body2" color="white">
+                            <Typography variant="body2" color="white" className="resend-otp-container">
                                 Didn’t receive the OTP?{' '}
-                                <Button onClick={() => console.log('Resend OTP')} color="primary">
-                                    Resend OTP
-                                </Button>
+                                <button className="resend-otp-button" type="submit">Resend OTP</button>
                             </Typography>
                             <Typography variant="body2">
                                 <Link to="#" onClick={() => setStep('generate-otp')} className="go-back-to-otp">
@@ -222,7 +224,7 @@ function NewPassword() {
         }
 
         try {
-            const response = await fetch('https://ringo-backend-na38.onrender.com/reset-password/new-password', {
+            const response = await fetch('http://localhost:5000/reset-password/new-password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, newPassword: password }),
@@ -254,7 +256,7 @@ function NewPassword() {
 
     return (
         <div className="reset-password">
-            <div className="left-side">
+            <div className="left-side top">
                 <div className='brand'>
                     <img src='/logo.png' alt='Ringo Logo' />
                     <span className='welcome-text'>
@@ -262,7 +264,7 @@ function NewPassword() {
                     </span>
                 </div>
             </div>
-            <div className="right-side">
+            <div className="right-side bottom">
                 <form className="reset-password-form" onSubmit={handleSubmit}>
                     <h2>Set New Password</h2>
 
@@ -319,5 +321,5 @@ function NewPassword() {
     );
 }
 
-export {NewPassword};
+export { NewPassword };
 export default ResetPassword;

@@ -17,7 +17,7 @@ const App = () => {
   const user = useSelector((state) => state.user.user);
   const isLoading = useSelector((state) => state.loading.isLoading);
   const [tokenChecked, setTokenChecked] = useState(false);
-  const BACKEND_URL="https://ringo-backend-na38.onrender.com"
+  const BACKEND_URL="http://localhost:5000"
 
   // Validate token and fetch user data
   useEffect(() => {

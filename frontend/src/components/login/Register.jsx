@@ -36,7 +36,7 @@ function Register() {
         setError(''); // Reset any previous error messages
 
         try {
-            const response = await fetch('https://ringo-backend-na38.onrender.com/api/register', {
+            const response = await fetch('http://localhost:5000/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

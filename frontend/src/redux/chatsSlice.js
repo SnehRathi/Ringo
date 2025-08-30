@@ -5,13 +5,14 @@ export const fetchUserChats = createAsyncThunk(
   'chats/fetchUserChats',
   async (token, { rejectWithValue }) => {
     try {
-      const response = await fetch('https://ringo-backend-na38.onrender.com/chat/getUserChats', {
+      const response = await fetch('http://localhost:5000/chat/getUserChats', {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
         throw new Error('Failed to fetch chats');
       }
       const data = await response.json();
+      // console.log(data);
       return data; // Chats along with unread count and last message
     } catch (error) {
       return rejectWithValue(error.message);

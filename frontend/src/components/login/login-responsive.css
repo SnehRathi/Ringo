@@ -5,7 +5,7 @@
 @media (max-width: 768px) {
 
     .login-page .left-side .brand span,
-    .reset-password .left-side .brand span {
+    .reset-password-page .left-side .brand span {
         max-width: 80%;
         font-size: 0.9rem;
     }
@@ -15,7 +15,7 @@
 @media (max-width: 480px) {
 
     .login-page,
-    .reset-password {
+    .reset-password-page {
         height: 100vh;
         width: 100vw;
         border-radius: 0px;
@@ -26,7 +26,7 @@
 
     /* Top */
     .login-page .top,
-    .reset-password .top {
+    .reset-password-page .top {
         flex: none;
         width: 100%;
         height: auto;
@@ -36,7 +36,7 @@
     }
 
     .login-page .top .brand,
-    .reset-password .top .brand {
+    .reset-password-page .top .brand {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
@@ -45,7 +45,7 @@
     }
 
     .login-page .top .logo-container,
-    .reset-password .top .logo-container {
+    .reset-password-page .top .logo-container {
         width: 50px;
         height: 50px;
         display: flex;
@@ -56,23 +56,24 @@
     }
 
     .login-page .top .logo-container img,
-    .reset-password .top .logo-container img {
+    .reset-password-page .top .logo-container img {
         object-fit: contain;
         object-position: center;
     }
 
     .login-page .top .brand span,
-    .reset-password .top .brand span {
+    .reset-password-page .top .brand span {
         max-width: 100%;
-        font-size: 1rem;
+        font-size: 0.9rem;
         text-align: left;
     }
 
     /* Bottom */
     .login-page .bottom,
-    .reset-password .bottom {
-        flex: 1;
+    .reset-password-page .bottom {
+        flex: 1 1;
         width: 100%;
+        justify-content: flex-start;
         height: auto;
         border-left: none;
         padding: 20px 20px;
@@ -85,12 +86,12 @@
 
     /* Form layout tweaks */
     .login-page .bottom .login-form,
-    .reset-password .bottom .login-form,
+    .reset-password-page .bottom .login-form,
     .login-page .bottom .reset-password-form,
-    .reset-password .bottom .reset-password-form {
+    .reset-password-page .bottom .reset-password-form {
         background: rgba(25, 25, 25, 0.75);
         max-width: 90%;
-        max-height: 85%;
+        max-height: 50%;
         gap: 1.5rem;
         padding: 5px 10px;
         border-radius: 10px;
@@ -101,14 +102,14 @@
 
     /* Heading smaller */
     .login-page .bottom .login-form h2,
-    .reset-password .bottom .login-form h2,
+    .reset-password-page .bottom .login-form h2,
     .login-page .bottom .reset-password-form h2,
-    .reset-password .bottom .reset-password-form h2 {
+    .reset-password-page .bottom .reset-password-form h2 {
         font-size: 1.25rem;
     }
 
     .input-field {
-        font-size: 0.95rem;
+        font-size: 1rem;
         padding: 9px;
     }
 
@@ -118,13 +119,8 @@
     }
 
     .login-button {
-        font-size: 0.95rem;
+        font-size: 1rem;
         padding: 9px;
-    }
-
-    .forgot-password {
-        font-size: 0.8rem;
-        text-decoration: underline;
     }
 
     .loading-container {
@@ -136,11 +132,202 @@
         height: 28px;
         border-width: 3px;
     }
-    .register-link{
+
+    .register-link {
         font-family: 'Roboto', sans-serif;
         color: white;
     }
-    .register-link>a{
+
+    .register-link>a {
         color: #1B77FF;
+    }
+
+
+    /* Reset Password Page*/
+    .reset-password-page .verify-otp-form {
+        padding: 1rem 0;
+        gap: 0.8rem;
+    }
+
+    .reset-password-page .verify-otp-form .MuiInputBase-input {
+        font-size: 1rem;
+        text-align: center;
+        color: white;
+        /* background-color: rgba(255, 255, 255, 0.1); */
+        border-radius: 6px;
+    }
+
+    /* Show blue border when focused */
+    .reset-password-page .verify-otp-form .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: blue !important;
+        border-width: 2px;
+    }
+
+    /* Retain white border when not focused */
+    .reset-password-page .verify-otp-form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+        border-color: white;
+        transition: border-color 0.2s ease;
+    }
+
+    /* Show blue border if input is not empty */
+    .reset-password-page .verify-otp-form .MuiOutlinedInput-root.MuiInputBase-adornedStart:not(.Mui-focused):has(input:not(:placeholder-shown)) .MuiOutlinedInput-notchedOutline,
+    .reset-password-page .verify-otp-form .MuiOutlinedInput-root.MuiInputBase-root:not(.Mui-focused):has(input:not(:placeholder-shown)) .MuiOutlinedInput-notchedOutline {
+        border-color: white !important;
+    }
+
+
+    /* Button (enabled and disabled) */
+    .reset-password-page .verify-otp-form button.MuiButton-root {
+        font-weight: bold;
+        font-size: 0.95rem;
+        padding: 10px 0;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .reset-password-page .verify-otp-form button.MuiButton-root:disabled {
+        background-color: rgba(57, 156, 255, 0.3);
+        color: #e4e4e4;
+        opacity: 0.8;
+        cursor: not-allowed;
+    }
+
+    .reset-password-page .verify-otp-form .MuiAlert-root {
+        font-size: 0.85rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    /* Resend OTP */
+    .reset-password-page .verify-otp-form .resend-otp-container {
+        font-size: 0.9rem;
+        text-align: right;
+        color: #e0e0e0;
+    }
+
+    .reset-password-page .verify-otp-form .resend-otp-button {
+        background: none;
+        border: none;
+        color: #1B77FF;
+        font-size: 0.9rem;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .reset-password-page .verify-otp-form .go-back-to-otp {
+        text-align: left;
+        font-size: 0.9rem;
+        color: #1B77FF;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .reset-password-page .verify-otp-form .go-back-to-otp:hover {
+        color: white;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .login-page,
+    .reset-password-page {
+        padding: 0;
+        gap: 1.5rem;
+    }
+
+    .login-page .top,
+    .reset-password-page .top {
+        padding: 8px 0;
+    }
+
+    .login-page .top .brand,
+    .reset-password-page .top .brand {
+        gap: 4px;
+        padding: 0 1px;
+    }
+
+    .login-page .top .logo-container,
+    .reset-password-page .top .logo-container {
+        width: 40px;
+        height: 40px;
+    }
+
+    .login-page .top .brand span,
+    .reset-password-page .top .brand span {
+        font-size: 0.75rem;
+    }
+
+    .login-page .bottom,
+    .reset-password-page .bottom {
+        padding: 1rem 0.5rem;
+    }
+
+    .login-page .bottom .login-form,
+    .reset-password-page .bottom .login-form,
+    .login-page .bottom .reset-password-form,
+    .reset-password-page .bottom .reset-password-form {
+        max-width: 95%;
+        padding: 10px;
+        gap: 1.2rem;
+    }
+
+    .login-page .bottom .login-form h2,
+    .reset-password-page .bottom .login-form h2,
+    .login-page .bottom .reset-password-form h2,
+    .reset-password-page .bottom .reset-password-form h2 {
+        font-size: 1.1rem;
+    }
+
+    .input-field {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    .password-field-container .toggle-password img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .login-button {
+        font-size: 1rem;
+        padding: 8px;
+    }
+
+    .loading-spinner {
+        width: 24px;
+        height: 24px;
+        border-width: 2.5px;
+    }
+
+    .register-link {
+        font-size: 0.85rem;
+    }
+
+    .reset-password-page .verify-otp-form {
+        padding: 0.5rem;
+        gap: 0.6rem;
+    }
+
+    .reset-password-page .verify-otp-form .MuiInputBase-input {
+        font-size: 0.9rem;
+    }
+
+    .reset-password-page .verify-otp-form .MuiOutlinedInput-root {
+        max-width: 48px;
+    }
+
+    .reset-password-page .verify-otp-form button.MuiButton-root {
+        font-size: 0.85rem;
+        padding: 8px 0;
+    }
+
+    .reset-password-page .verify-otp-form .MuiAlert-root {
+        font-size: 0.75rem;
+    }
+
+    .reset-password-page .verify-otp-form .resend-otp-container,
+    .reset-password-page .verify-otp-form .resend-otp-button,
+    .reset-password-page .verify-otp-form .go-back-to-otp {
+        font-size: 0.8rem;
     }
 }

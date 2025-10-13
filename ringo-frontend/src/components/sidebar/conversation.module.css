@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+.conversation {
+  display: flex;
+  padding: 10px 10px;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid gray;
+  flex: 1;
+  height: 65px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.conversation img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.usernameLastmsg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  flex: 1;
+  height: 45px;
+}
+
+.usernameTime,
+.lastmsgUnreadCount {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.username {
+  font-size: 1rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  color: white;
+}
+
+.lastMsgTime {
+  font-size: 0.8rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #ccc;
+}
+
+.lastMsg {
+  font-size: 0.8rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #bbb;
+}
+
+.unreadCount {
+  background-color: #f00;
+  color: white;
+  font-size: 0.8rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversation:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.activeChat {
+  background-color: #3838389a;
+  color: white;
+}
+
+.activeChat:hover {
+  background-color: #3838387b;
+}

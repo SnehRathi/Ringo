@@ -1,0 +1,223 @@
+.sidebar {
+    flex: 0.3;
+    padding: 10px 0;
+    padding-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    caret-color: transparent;
+}
+
+/* Sidebar UserInfo CSS for Next.js */
+.userInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+}
+
+.userInfo a {
+    text-decoration: none;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.user img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user img:hover {
+    cursor: pointer;
+}
+
+.username {
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: white;
+}
+
+.icons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #949494;
+}
+
+/* Dropdown */
+.dropdownMenu {
+    position: absolute;
+    top: 45px;
+    right: 5px;
+    z-index: 1000;
+    background-color: #0062f5;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    color: white;
+}
+
+.modalBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.modalBox h3 {
+    font-size: 18px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.dropdownButton {
+    font-size: 1rem;
+    padding: 4px 6px;
+    cursor: pointer;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid black;
+}
+
+.dropdownButton:hover {
+    background-color: rgb(19, 19, 19);
+}
+
+/* Chat List */
+.chatList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: scroll;
+}
+
+.chatList::-webkit-scrollbar {
+    display: none;
+}
+
+.searchBar {
+    margin: 0 10px;
+    border-radius: 5px;
+    padding: 5px;
+    padding-right: 10px;
+    gap: 10px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.452);
+    border: 0.1px solid white;
+}
+
+.searchBar:focus-within {
+    background-color: rgba(0, 0, 0, 0.767);
+    transition: 0.2s;
+}
+
+.searchBar input {
+    border: none;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    background-color: transparent;
+    color: white;
+    height: 100%;
+    flex: 1;
+    caret-color: white;
+}
+
+.searchBar input::placeholder {
+    color: rgb(222, 222, 222);
+    font-size: 16px;
+}
+
+.searchBar label {
+    height: 20px;
+    width: 20px;
+}
+
+.searchBar label img {
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+}
+
+.conversations {
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 2px;
+}
+
+.conversationLink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.conversations::-webkit-scrollbar {
+    width: 10px;
+}
+
+.conversations::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.conversations::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.conversations::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.skeletonConversation {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.skeletonConversation img {
+    border-radius: 50%;
+}
+
+.skeletonText {
+    margin-left: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.skeletonText .skeletonLine {
+    margin: 5px 0;
+}

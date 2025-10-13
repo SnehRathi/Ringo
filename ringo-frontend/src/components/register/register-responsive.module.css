@@ -1,0 +1,183 @@
+/* Medium screens (≤ 1024px) */
+@media (max-width: 1024px) {
+  .welcomeText {
+    font-size: 1.2rem;
+    max-width: 85%;
+  }
+}
+
+/* Small screens (phones ≤ 768px) */
+@media (max-width: 768px) {
+  .registerPage {
+    flex-direction: column;
+    width: 95vw;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .leftSide {
+    flex: none;
+    width: 100%;
+    padding: 20px 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .brand {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .logoContainer {
+    width: 50px;
+    height: 50px;
+  }
+
+  .logoContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .welcomeText {
+    font-size: 1rem;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .rightSide {
+    flex: none;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .registerForm {
+    max-width: 90%;
+    margin: auto;
+    padding: 15px;
+    gap: 1rem;
+    background: rgba(25, 25, 25, 0.75);
+    border-radius: 10px;
+  }
+
+  .heading {
+    font-size: 1.3rem;
+  }
+
+  .inputField,
+  .passwordField {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .loginButton,
+  .prevButton {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .buttonRow {
+    gap: 10px;
+  }
+
+  .loginRedirect {
+    font-size: 0.85rem;
+  }
+}
+
+/* Extra small screens (≤ 480px) */
+@media (max-width: 480px) {
+  .registerPage {
+    border-radius: 0;
+    height: 100vh;
+    width: 100vw;
+    gap: 1.5rem;
+    margin: 0;
+  }
+
+  .leftSide {
+    padding: 10px 0;
+  }
+
+  .brand {
+    gap: 6px;
+  }
+
+  .logoContainer {
+    width: 40px;
+    height: 40px;
+  }
+
+  .welcomeText {
+    font-size: 0.9rem;
+  }
+
+  .rightSide {
+    padding: 15px;
+  }
+
+  .registerForm {
+    max-width: 95%;
+    padding: 10px;
+    gap: 0.8rem;
+  }
+
+  .heading {
+    font-size: 1.1rem;
+  }
+
+  .inputField,
+  .passwordField {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .togglePassword {
+    right: 8px;
+  }
+
+  .loginButton,
+  .prevButton {
+    font-size: 0.9rem;
+    padding: 9px;
+  }
+
+  .loadingSpinner {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+
+  .loginRedirect {
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small devices (≤ 420px) */
+@media (max-width: 420px) {
+  .welcomeText {
+    font-size: 0.8rem;
+  }
+
+  .heading {
+    font-size: 1rem;
+  }
+
+  .inputField,
+  .passwordField {
+    font-size: 0.85rem;
+    padding: 7px;
+  }
+
+  .loginButton,
+  .prevButton {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .loginRedirect {
+    font-size: 0.75rem;
+  }
+}

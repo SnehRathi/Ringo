@@ -62,8 +62,8 @@
     justify-content: center;
     align-items: center;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     border-left: 1px solid gray;
     padding: 20px;
 }
@@ -184,7 +184,7 @@
 
 /* Reset Password Link on Login Page*/
 .reset-password-link {
-    font-size: 0.8rem;
+    font-size: 0.rem;
     color: #ccc;
     cursor: pointer;
     font-family: 'Roboto', sans-serif;
@@ -219,7 +219,7 @@
     gap: 1rem;
 }
 
-.reset-password-page .verify-otp-form .MuiInputBase-input{
+.reset-password-page .verify-otp-form .MuiInputBase-input {
     color: white;
 }
 
@@ -243,7 +243,8 @@
     color: white;
     font-size: 1rem;
 }
-.reset-password-page .verify-otp-form .resend-otp-button{
+
+.reset-password-page .verify-otp-form .resend-otp-button {
     background: none;
     border: none;
     outline: none;
@@ -252,10 +253,12 @@
     font-size: 1rem;
     text-decoration: underline;
 }
-.reset-password-page .verify-otp-form .resend-otp-button:hover{
+
+.reset-password-page .verify-otp-form .resend-otp-button:hover {
     color: white;
     cursor: pointer;
 }
+
 .reset-password-page .verify-otp-form .go-back-to-otp {
     text-align: left;
     width: 100%;

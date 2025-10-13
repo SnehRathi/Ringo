@@ -1,0 +1,214 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Pacifico&display=swap');
+
+.loginPage {
+  background: rgba(25, 25, 25, 0.95);
+  height: 90vh;
+  width: 75vw;
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+  margin: auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Left Side */
+.leftSide {
+  flex: 0.4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  caret-color: transparent;
+  background: linear-gradient(135deg, #1B77FF, #0A3C91);
+}
+
+.brand {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logoContainer {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.logoContainer img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.welcomeText {
+  color: white;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.5rem;
+  max-width: 80%;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+/* Right Side */
+.rightSide {
+  flex: 0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+}
+
+/* Form */
+.loginForm {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.heading {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.inputField,
+.passwordField {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  color: white;
+}
+
+.inputField::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.inputField:focus, .passwordField:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #1B77FF;
+}
+
+/* Password field */
+.passwordFieldContainer {
+  position: relative;
+}
+
+.passwordField {
+  width: 100%;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  width: 24px;
+}
+
+/* Login button */
+.loginButton {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #1B77FF;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.loginButton:hover {
+  background: #0A3C91;
+}
+
+/* Loading Spinner */
+.loadingContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loadingSpinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left-color: #1B77FF;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+}
+
+/* Links */
+.registerLink {
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  text-align: center;
+  align-self: flex-start;
+}
+
+.registerLink a {
+  color: #1B77FF;
+  font-weight: 500;
+  text-decoration: underline;
+
+}
+
+.registerLink a:hover {
+  color: white;
+}
+
+/* Reset Password link */
+.resetPasswordLink {
+  font-size: 0.9rem;
+  color: #ccc;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: flex-end;
+  text-decoration: none;
+}
+
+.resetPasswordLink span {
+  position: relative;
+}
+
+.resetPasswordLink span::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #ccc;
+}
+
+.resetPasswordLink span:hover::after {
+  width: 100%;
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

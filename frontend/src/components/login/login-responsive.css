@@ -77,8 +77,8 @@
         height: auto;
         border-left: none;
         padding: 20px 20px;
-        backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
         background: none;
         display: flex;
         flex-direction: column;
